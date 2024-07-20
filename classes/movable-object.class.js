@@ -14,10 +14,10 @@ class MovableObject {
     }
 
     loadImages(arr) {
-        arr.array.forEach(path => {
+        arr.forEach(path => {
             let img = new Image()
             img.src = path
-            imageCache[path] = path
+           this.imageCache[path] = path
         });
        
     }

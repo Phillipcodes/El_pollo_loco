@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /private/
+Disallow: /temp/
+Disallow: /cgi-bin/
+Disallow: /admin/
+Allow: /public/
+
+# Spezifische Regel für Googlebot
+User-agent: Googlebot
+Disallow: /no-google/
+
+# Spezifische Regel für Bingbot
+User-agent: Bingbot
+Disallow: /no-bing/
