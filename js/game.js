@@ -1,10 +1,11 @@
 let canvas;
 let world;
-
+let keyboard = new Keyboard();
 
 function init() {
 canvas = document.getElementById('canvas');
-world = new World(canvas);
+world = new World(canvas, keyboard);
+
 
 
 console.log('my Character is ', world.character)
@@ -12,24 +13,46 @@ console.log('my Character is ', world.character)
 
 
 
+window.addEventListener('keydown',(event) => {
+
+   switch(event.key) {
+    case 'w': keyboard.UP = true
+    console.log('Up is now true')
+    break;
+    case 'a': keyboard.LEFT = true
+    console.log('left is now true')
+    break;
+    case 's': keyboard.DOWN = true
+    console.log('down is now true')
+    break;
+    case 'd': keyboard.RIGHT = true
+    console.log('right is now true')
+    break;
+    case ' ': keyboard.SPACE = true
+    console.log('Space is now true')
+    break;
+   }
+})
 
 
-document.addEventListener('keydown', function(event) {
-    // Überprüfe den Wert von event.key
+
+window.addEventListener('keyup',(event) => {
+
     switch(event.key) {
-        case 'w': // Wenn event.key 'w' ist
-            console.log('W key pressed'); // Ausgabe: W key pressed
-            break; // Beende die aktuelle case-Anweisung
-        case 'a': // Wenn event.key 'a' ist
-            console.log('A key pressed'); // Ausgabe: A key pressed
-            break;
-        case 's': // Wenn event.key 's' ist
-            console.log('S key pressed'); // Ausgabe: S key pressed
-            break;
-        case 'd': // Wenn event.key 'd' ist
-            console.log('D key pressed'); // Ausgabe: D key pressed
-            break;
-        default: // Für alle anderen Tasten
-            // Optional: Handle andere Tasten
-            break;
-    }})
+     case 'w': keyboard.UP = false
+     console.log('Up is now false')
+     break;
+     case 'a': keyboard.LEFT = false
+     console.log('left is now false')
+     break;
+     case 's': keyboard.DOWN = false
+     console.log('down is now false')
+     break;
+     case 'd': keyboard.RIGHT = false
+     console.log('right is now false')
+     break;
+     case ' ': keyboard.SPACE = false
+     console.log('Space is now false')
+     break;
+    }
+ })

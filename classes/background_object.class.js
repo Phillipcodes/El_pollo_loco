@@ -8,4 +8,8 @@ height = 480
         this.x = x;
         this.y = 480 - this.height
     }
-}
+
+      
+ 
+       
+    }
