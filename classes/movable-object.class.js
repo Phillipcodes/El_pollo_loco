@@ -8,6 +8,29 @@ class MovableObject {
     imageCache = {};
     currentImage = 0;
     otherDirection = false;
+    isSleeping = false;
+    movementTimeout = null;
+    speedY = 0;
+    acceleration = 1
+
+
+
+    applyGravity() {
+        setInterval(()=> {
+            if(this.isAboveGround() || this.speedY >0) {
+                this.y -= this.speedY
+                this.speedY -= this.acceleration
+            }
+      
+        },1000/60)
+    }
+
+
+    isAboveGround() {
+      return  this.y < 150
+    }
+
+
     loadImage(path) {
         this.img = new Image();
         this.img.src = path
@@ -23,30 +46,33 @@ class MovableObject {
     }
 
 
+    jump() {
+        if(this.world.keyboard.UP && !this.isAboveGround() ) {
+          this.inAir = true
+          this.isSleeping = false
+          this.speedY = 17
+          this.jump_sound.play();
+          
+        }
+      };
+
+
     moveRight() {
-        setInterval(() => {
-            this.x += this.speed
-            if(this.x < -300) {
-               this.x= 720
-            }
-          }, 1000 / 60)
-    }
+            this.x += this.speed;
+            this.isSleeping = false; 
+    };
 
     moveleft() {
-        setInterval(() => {
             this.x -= this.speed 
-            if(this.x < -300) {
-               this.x= 720
-            }
-          }, 1000 / 60)
-    }
+            this.isSleeping = false;
+    };
 
     playAnimation(images) {
         let i = this.currentImage % this.IMAGES_WALKING.length
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++
-    }
+    };
 
     setStartXEnemieGroup(group, index) {
         const groupSpacing =  550; // Abstand zwischen den Gruppen
