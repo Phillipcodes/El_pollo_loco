@@ -1,17 +1,24 @@
 class Character extends MovableObject {
     height = 275;
     y = 150;   //standard valuve 155
-   
-    IMAGES_WALKING = ['../img/2_character_pepe/2_walk/W-21.png','../img/2_character_pepe/2_walk/W-22.png','../img/2_character_pepe/2_walk/W-23.png','../img/2_character_pepe/2_walk/W-24.png','../img/2_character_pepe/2_walk/W-25.png','../img/2_character_pepe/2_walk/W-26.png'];
-    IMAGES_SLEEPING = ['../img/2_character_pepe/1_idle/long_idle/I-11.png','../img/2_character_pepe/1_idle/long_idle/I-12.png','../img/2_character_pepe/1_idle/long_idle/I-13.png','../img/2_character_pepe/1_idle/long_idle/I-14.png','../img/2_character_pepe/1_idle/long_idle/I-15.png','../img/2_character_pepe/1_idle/long_idle/I-16.png','../img/2_character_pepe/1_idle/long_idle/I-17.png','../img/2_character_pepe/1_idle/long_idle/I-18.png','../img/2_character_pepe/1_idle/long_idle/I-19.png','../img/2_character_pepe/1_idle/long_idle/I-20.png',]
-    IMAGES_JUMPING = ['../img/2_character_pepe/3_jump/J-31.png','../img/2_character_pepe/3_jump/J-32.png','../img/2_character_pepe/3_jump/J-33.png','../img/2_character_pepe/3_jump/J-34.png','../img/2_character_pepe/3_jump/J-35.png','../img/2_character_pepe/3_jump/J-36.png','../img/2_character_pepe/3_jump/J-37.png','../img/2_character_pepe/3_jump/J-38.png','../img/2_character_pepe/3_jump/J-39.png',]
+    offset = {
+        top:  260,     //offset x iist links y top  width is right height is bottom
+        bottom: 175,
+        left:80,
+        right: 80
+    
+      }
+    IMAGES_WALKING = ['./img/2_character_pepe/2_walk/W-21.png','./img/2_character_pepe/2_walk/W-22.png','./img/2_character_pepe/2_walk/W-23.png','./img/2_character_pepe/2_walk/W-24.png','./img/2_character_pepe/2_walk/W-25.png','./img/2_character_pepe/2_walk/W-26.png'];
+    IMAGES_SLEEPING = ['./img/2_character_pepe/1_idle/long_idle/I-11.png','./img/2_character_pepe/1_idle/long_idle/I-12.png','./img/2_character_pepe/1_idle/long_idle/I-13.png','./img/2_character_pepe/1_idle/long_idle/I-14.png','./img/2_character_pepe/1_idle/long_idle/I-15.png','./img/2_character_pepe/1_idle/long_idle/I-16.png','./img/2_character_pepe/1_idle/long_idle/I-17.png','./img/2_character_pepe/1_idle/long_idle/I-18.png','./img/2_character_pepe/1_idle/long_idle/I-19.png','./img/2_character_pepe/1_idle/long_idle/I-20.png',]
+    IMAGES_JUMPING = ['./img/2_character_pepe/3_jump/J-31.png','./img/2_character_pepe/3_jump/J-32.png','./img/2_character_pepe/3_jump/J-33.png','./img/2_character_pepe/3_jump/J-34.png','./img/2_character_pepe/3_jump/J-35.png','./img/2_character_pepe/3_jump/J-36.png','./img/2_character_pepe/3_jump/J-37.png','./img/2_character_pepe/3_jump/J-38.png','./img/2_character_pepe/3_jump/J-39.png',]
     world;
     speed = 4;
-    walking_sound = new Audio('../audio/pepe_walk_sound.mp3');
-    idle_sound = new Audio('../audio/03 ASLEEP_ESP_SOUND V2.mp3')
-    jump_sound = new Audio('../audio/01 JUMP_ESP_SOUND.mp3')
+    walking_sound = new Audio('./audio/pepe_walk_sound.mp3');
+    idle_sound = new Audio('./audio/03 ASLEEP_ESP_SOUND V2.mp3')
+    jump_sound = new Audio('./audio/01 JUMP_ESP_SOUND.mp3')
     constructor() {
-    super().loadImage('../img/2_character_pepe/2_walk/W-21.png') 
+    super().loadImage('./img/2_character_pepe/2_walk/W-21.png') 
+    
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_SLEEPING);
     this.loadImages(this.IMAGES_JUMPING );
@@ -35,12 +42,12 @@ class Character extends MovableObject {
               this.playAnimation(this.IMAGES_WALKING);
           }
         }
-      }, 80);
+      }, 95);
       setInterval(()=> {
         if (this.isSleeping) {
           this.playAnimation(this.IMAGES_SLEEPING);
         }
-      }, 200)
+      }, 120)
   }
 
 

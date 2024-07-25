@@ -14,11 +14,25 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    this.level = this.level
+    this.checkCollision();
+    // this.level = this.level
   }
 
   setWorld() {
     this.character.world = this;
+  }
+
+  checkCollision() {
+   
+    setInterval(() => {
+      this.level.enemies.forEach(enemy => {
+        if(this.character.isColliding(enemy)) {
+          console.log('collison detected', enemy);
+        }
+      
+      });
+      
+    }, 3000);
   }
 
   draw() {
@@ -27,7 +41,7 @@ class World {
     this.addObjectsToMap(this.level.BackgroundObjects);
  
     this.addToMap(this.character);
-    this.addObjectsToMap(this.level.coins);
+    this.addObjectsToMap(this.level.coins); // maybe rewirte the draw function for none moveable objects jsut to make it clearer what in which class it contains 
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.clouds);
     this.ctx.translate(-this.camera_x, 0);
@@ -47,15 +61,26 @@ class World {
 
   addToMap(mo) {
     if (mo.otherDirection) {
-      this.ctx.save();
-      this.ctx.translate(mo.width, 0);
-      this.ctx.scale(-1, 1);
-      mo.x = mo.x * -1;
+      this.flipImage(mo);
     }
-    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    mo.draw(this.ctx);
+    mo.drawFrame(this.ctx);
     if (mo.otherDirection) {
-      mo.x = mo.x * -1;
-      this.ctx.restore();
+      this.flipImageBack(mo)
     }
+  }
+
+
+  flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.width, 0);
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
+}
+
+
+  flipImageBack(mo) {
+    mo.x = mo.x * -1;
+    this.ctx.restore();
   }
 }

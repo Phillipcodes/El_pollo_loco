@@ -4,7 +4,7 @@ class Cloud extends MovableObject {
     height = 200;
 
     constructor(group,index) {
-        super().loadImage('../img/5_background/layers/4_clouds/1.png'); 
+        super().loadImage('./img/5_background/layers/4_clouds/1.png'); 
  
         this.x = this.setStartXEnemieGroup(group,index);
         this.animate();

@@ -9,10 +9,68 @@ class MovableObject {
     currentImage = 0;
     otherDirection = false;
     isSleeping = false;
-    movementTimeout = null;
+    movementTimeout = null; 
     speedY = 0;
-    acceleration = 1
+    acceleration = 0.7
+  offset = {
+    top:  0,     //offset x iist links y top  width is right height is bottom
+    bottom: 0,
+    left:0,
+    right: 0
 
+  }
+   
+
+    draw(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+         
+    }
+
+
+    isColliding (mo) {
+      
+        return  this.x + this.width - this.offset.right > mo.x + mo.offset.left&&
+        this.y + this.height -this.offset.bottom > mo.y + mo.offset.top &&
+        this.x +this.offset.left < mo.x + mo.width - mo.offset.right&&
+        this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
+
+      
+}
+
+
+
+
+    drawFrame(ctx) {
+        if(this instanceof Character || this instanceof Chicken ||this instanceof BabyChicken || this instanceof Endboss) {
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'blue';
+            ctx.rect( this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+     
+
+        if (this instanceof Character || this instanceof Chicken ||this instanceof BabyChicken || this instanceof Endboss) {
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'red';
+            ctx.rect(this.x + this.offset.left, this.y + this.offset.top,(this.x + this.width - this.offset.right) - (this.x + this.offset.left),(this.y + this.height - this.offset.bottom) - (this.y + this.offset.top));
+            ctx.stroke();
+        }
+
+    }
+
+
+       drawFrame2(ctx) {
+        if(this instanceof Character || this instanceof Chicken ||this instanceof BabyChicken || this instanceof Endboss) {
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'red';
+            ctx.rect( this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+     
+    }
 
 
     applyGravity() {
@@ -46,12 +104,15 @@ class MovableObject {
     }
 
 
+
+
     jump() {
         if(this.world.keyboard.UP && !this.isAboveGround() ) {
           this.inAir = true
           this.isSleeping = false
-          this.speedY = 17
+          this.speedY = 15
           this.jump_sound.play();
+          this.currentImage = 0
           
         }
       };
