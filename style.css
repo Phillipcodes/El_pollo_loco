@@ -5,9 +5,70 @@ body {
     height: 100vh;
     justify-content: center;
     margin: 0;
+    font-family: RioGrande;
+}
+
+h1 {
+    color: #5e1224;
+    font-size: 42px;
 }
 
 canvas {
     background-color: black;
 }
 
+.overlay {
+    position: relative;
+    
+}
+
+.character-information {
+    position: absolute;
+    top: -20px;
+    left: 0px; 
+    display: flex;
+    flex-direction: column-reverse;
+    
+}
+
+.collectables{
+    width: 65px;
+    height: 65px;
+}
+
+.health {
+    width: 275px;
+    height: 85px;
+}
+
+.collectables-bar {
+   
+    display: flex;
+    gap: 32px;
+    color: white;
+    font-size: 24px;
+}
+
+.collectables-bar div {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+
+}
+
+#sound-button {
+    width: 45px;
+    height: 45px;
+}
+
+#sound-button:hover {
+    transform: scale(1.1);
+}
+
+.mute {
+    position: absolute;
+    top: 15px;
+    left: 50%
+    
+}

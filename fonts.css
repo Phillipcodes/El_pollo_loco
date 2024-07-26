@@ -1,0 +1,14 @@
+@font-face {
+    font-family: RioGrande;
+    src: url(./fonts/RioGrande.ttf);
+}
+
+@font-face {
+    font-family: RioGrandeStriped;
+    src: url(./fonts/RioGrande_Striped.ttf)
+}
+
+@font-face {
+    font-family: Banditos;
+    src: url(./fonts/IFC_LOS_BANDITOS.ttf);
+}

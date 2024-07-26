@@ -1,10 +1,11 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-
+let playSound = true;
 function init() {
 canvas = document.getElementById('canvas');
 world = new World(canvas, keyboard);
+setMuteSounds();
 
 
 
@@ -56,3 +57,8 @@ window.addEventListener('keyup',(event) => {
      break;
     }
  })
+
+ function setMuteSounds() {
+   document.getElementById('sound-button').onclick = () => world.initializeSoundButton();
+ }
+
