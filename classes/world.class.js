@@ -19,7 +19,7 @@ sounds = [];
     this.draw();
     this.setWorld();
     this.run();
-    this.sounds = [ ...this.character.sounds];
+    this.sounds = [ ...this.character.sounds,];
   }
 
   setWorld() {
@@ -32,7 +32,6 @@ sounds = [];
     setInterval(() => {
       this.checkEnemyCollison();
       this.checkThrowObject();
-      
     }, 100);
   }
 
@@ -40,9 +39,11 @@ sounds = [];
   checkThrowObject() {
     if(this.keyboard.SPACE) {
       let bottle = new ThrowableObject(this.character.x + 40 ,this.character.y + 100);
-      this.throwableObjects.push(bottle)
+      this.throwableObjects.push(bottle);
+     
     }
   }
+
 
   checkEnemyCollison() {
     this.level.enemies.forEach(enemy => {
@@ -113,41 +114,16 @@ sounds = [];
     this.ctx.restore();
   }
 
-  muteAllSounds() {
-    let soundImg = document.getElementById('sound-button');
-    if(playSound) {
-      this.sounds.forEach(sound => {
-        sound.muted = true;
-      
-      });
-      soundImg.src = '../img/10_overlay_icons/volume.png'
-      playSound = false
-    }
- 
-  }
-
-  unmuteAllSounds() {
-    let soundImg = document.getElementById('sound-button');
-    if(!playSound) {
-      this.sounds.forEach(sound => {
-        sound.muted = false;
-  
-      });
-      soundImg.src = '../img/10_overlay_icons/no_sound.png'
-      playSound = true
-    }
-   
-  }
 
   initializeSoundButton() {
     const soundButton = document.getElementById('sound-button');
     soundButton.onclick = () => {
       if (playSound) {
-        this.muteAllSounds();
+        SoundManager.muteAll();;
         soundButton.src = '../img/10_overlay_icons/volume.png'; 
         playSound = false;
       } else {
-        this.unmuteAllSounds();
+        SoundManager.unmuteAll();
         soundButton.src = '../img/10_overlay_icons/no_sound.png'; 
         playSound = true;
       }
