@@ -58,7 +58,7 @@ window.addEventListener('keyup',(event) => {
     }
  })
 
- function setMuteSounds() {
-   document.getElementById('sound-button').onclick = () => world.initializeSoundButton();
+  function setMuteSounds() {
+   document.getElementById('mute-container').onclick = () => world.initializeSoundButton();
  }
 

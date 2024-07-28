@@ -61,10 +61,18 @@ class Character extends MovableObject {
   ];
   world;
   speed = 4;
+  coinAmount = 0;
+    coinMax = 0;
+
+  bottleAmount = 0;
+  bottleMax = 0;
+
   walking_sound = SoundManager.getSound('walk');
   idle_sound = SoundManager.getSound('idle');
   jump_sound = SoundManager.getSound('jump');
   hurt_sound = SoundManager.getSound('hit');
+  full_sound = SoundManager.getSound('pepeFull')
+  collect_sound = SoundManager.getSound('collect')
   sounds = [];
 
   constructor() {
@@ -81,32 +89,62 @@ class Character extends MovableObject {
     
   }
 
+  setMax(coinMax,bottleMax) {
+    this.coinMax = coinMax;
+    this.bottleMax = bottleMax;
+    
+}
+
+updateCollectables(amount) {
+  if(amount === 'coinAmount') {
+  this.coinAmount++
+ 
+  }else {
+    this.bottleAmount++
+    
+  }
+  if(this.bottleAmount == this.bottleMax) {
+    this.full_sound.play();
+  }
+  this.collect_sound.play();
+  // Weitere Logik, um die Anzeige der gesammelten Münzen zu aktualisieren
+}
+
+
   animate() {
     setInterval(() => {
       this.handleCharacter();
     }, 1000 / 60);
     setInterval(() => {
-      if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-        this.hurt_sound.play();
-    
-      } else if (this.isAboveGround()) {
-        this.playAnimation(this.IMAGES_JUMPING);
-      } else {
-        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          this.playAnimation(this.IMAGES_WALKING);
-        }
-      }
-    }, 95);
+      this.characterMovementanimation();
+    }, 105);
     setInterval(() => {
-      if (this.isSleeping) {
-        this.playAnimation(this.IMAGES_SLEEPING);
-      } else if(this.isIdle) {
-        this.playAnimation(this.IMAGES_IDLE);
-      }
+     this.idleAnimation();
     }, 120);
+  }
+
+  idleAnimation() {
+    if (this.isSleeping) {
+      this.playAnimation(this.IMAGES_SLEEPING);
+    } else if(this.isIdle) {
+      this.playAnimation(this.IMAGES_IDLE);
+    }
+  }
+
+  characterMovementanimation() {
+    if (this.isDead()) {
+      this.playAnimation(this.IMAGES_DEAD);
+    } else if (this.isHurt()) {
+      this.playAnimation(this.IMAGES_HURT);
+      this.hurt_sound.play();
+  
+    } else if (this.isAboveGround()) {
+      this.playAnimation(this.IMAGES_JUMPING);
+    } else {
+      if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+        this.playAnimation(this.IMAGES_WALKING);
+      }
+    }
   }
 
   handleCharacter() {
