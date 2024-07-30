@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let playSound = true;
+let intervalIds = [];
 function init() {
 canvas = document.getElementById('canvas');
 world = new World(canvas, keyboard);
@@ -62,3 +63,13 @@ window.addEventListener('keyup',(event) => {
    document.getElementById('mute-container').onclick = () => world.initializeSoundButton();
  }
 
+function setStoppableInterval(fn,time) {
+   let id = setInterval(fn,time);
+   intervalIds.push(id);
+}
+
+
+function stopGame() {
+   intervalIds.forEach(clearInterval)
+   
+}

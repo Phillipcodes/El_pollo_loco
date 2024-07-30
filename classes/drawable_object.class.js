@@ -6,8 +6,8 @@ class DrawableObject {
     y = 275;
     height = 150;
     width = 100;
-
-
+    isDeadFlag = false;
+    hasBounced = false;
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
       }
@@ -26,8 +26,24 @@ class DrawableObject {
         });
       }
 
+
       
 
+      bounce() {
+        if (!this.hasBounced) {
+          this.speedY = 100; // Passt den Wert an, um die Intensität des Bounces zu steuern
+          this.hasBounced = true; // Setze die Flagge, um den Bounce nur einmal auszulösen
+          
+          setTimeout(() => {
+              this.speedY = 0; // Setze die Geschwindigkeit nach kurzer Zeit zurück
+          }, 100); // Dauer des Bounces, hier 100ms
+      }
+  }
+
+     resetBounce() {
+        this.hasBounced = false; // Setze die Flagge zurück, wenn der Charakter den Boden erreicht oder sich bewegt
+    }
+    
       isColliding(mo) {
         return (
           this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -36,6 +52,16 @@ class DrawableObject {
           this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
         );
       }
+      isCollidingAbove(mo) {
+        // Überprüfe, ob der Charakter oberhalb des Gegners ist
+        const isAbove = this.y + this.height - this.offset.bottom < mo.y + mo.offset.top;
+        // Überprüfe, ob der Charakter horizontal über dem Gegner liegt
+        const isHorizontallyOverlapping = 
+            this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
+            
+        return isAbove && isHorizontallyOverlapping;
+    }
 
   drawFrame(ctx) {
     if (this.setDrawFrameInstance()) {
@@ -76,6 +102,17 @@ class DrawableObject {
         array.splice(index,1)
         
       }
+    }
+  }
+
+  playAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+
+    if (i === images.length - 1 && this.isDeadFlag) {
+      this.currentImage = i; // Setze das Bild auf das letzte Bild
     }
   }
 

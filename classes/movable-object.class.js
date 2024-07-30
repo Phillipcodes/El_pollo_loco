@@ -57,17 +57,23 @@ class MovableObject extends DrawableObject{
 //   }
 
   applyGravity() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration;
+          this.y -= this.speedY;
+          this.speedY -= this.acceleration;
+
+          if (this.y >= 350 &&  this.isAboveGround()) {
+            this.y = 350; // Stelle sicher, dass y nicht unter den Boden sinkt
+            this.speedY = 0; // Stoppe die Bewegung auf der Y-Achse
+            this.resetBounce(); // Setze die Bounce-Flagge zurück, wenn der Charakter den Boden erreicht
+        }
       }
-    }, 1000 / 60);
-  }
+  }, 1000 / 60);
+}
 
   isAboveGround() {
     if((this instanceof ThrowableObject)) {
-       return true
+       return this.y < 350 
     }else {
         return this.y < 185;
     }
@@ -93,12 +99,7 @@ class MovableObject extends DrawableObject{
     this.isSleeping = false;
   }
 
-  playAnimation(images) {
-    let i = this.currentImage % images.length;
-    let path = images[i];
-    this.img = this.imageCache[path];
-    this.currentImage++;
-  }
+
 
   setStartXEnemieGroup(group, index) {
     const groupSpacing = 550; // Abstand zwischen den Gruppen

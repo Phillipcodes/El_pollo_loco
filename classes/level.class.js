@@ -13,4 +13,7 @@ class Level {
         this.coins = coins
         this.bottles = bottles
     }
+    removeEnemy(enemyToRemove) {
+        this.enemies = this.enemies.filter(enemy => enemy !== enemyToRemove);
+    }
 }

@@ -11,7 +11,7 @@ sounds = [];
   coinbar = new CoinBar();
   bottlebar = new BottleBar();
   throwableObjects = [];
-
+  
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -36,6 +36,9 @@ sounds = [];
       this.checkThrowObject();
       this.checkBottleCollison(); 
       this.checkCoinCollison();
+      this.checkCollisionThrow();
+      this.checkCollisionAbove();
+      this.updateThrow();
     }, 100);
   }
 
@@ -88,6 +91,24 @@ sounds = [];
 
 
 
+  checkCollisionAbove() {
+    this.level.enemies.forEach(enemy => {
+        if (this.character.isCollidingAbove(enemy)) {
+            console.log('Collision detected above', enemy);
+            
+            // Der Charakter springt und erhält Schaden
+            this.character.bounce(); 
+            this.character.hit(this.character.DMG);
+            
+            // Entferne das Huhn aus dem Level
+            this.level.removeEnemy(enemy);
+        }
+    });
+}
+
+
+  
+
   checkCoinCollison() {
     this.level.coins.forEach(coin => {
       if(this.character.isColliding(coin)) {
@@ -100,6 +121,14 @@ sounds = [];
       
     });
           
+  }
+
+   checkCollisionThrow() {
+    this.throwableObjects.forEach(thr => {
+      if (thr.isThrown) { // Überprüfe nur geworfene Objekte
+        thr.checkCollisionWithEnemies(this.level.enemies);
+      }
+    });
   }
   
   draw() {
@@ -176,6 +205,8 @@ sounds = [];
     };
   
 
+updateThrow() {
+  this.throwableObjects = this.throwableObjects.filter(obj => !obj.shouldRemove());
+}
 
-  
 }

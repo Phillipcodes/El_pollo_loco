@@ -60,7 +60,9 @@ class Character extends MovableObject {
                 './img/2_character_pepe/1_idle/idle/I-9.png',             
   ];
   world;
+  DMG = 10;
   speed = 4;
+ 
   coinAmount = 0;
     coinMax = 0;
 
@@ -107,20 +109,23 @@ updateCollectables(amount) {
     this.full_sound.play();
   }
   this.collect_sound.play();
-  // Weitere Logik, um die Anzeige der gesammelten Münzen zu aktualisieren
+ 
+}
+updateFalling() {
+  // Hier kannst du den Fallzustand aktualisieren
+  this.isFalling = this.speedY > 0; // Nur wenn der Charakter nach unten bewegt wird, ist er am Fallen
 }
 
-
   animate() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.handleCharacter();
     }, 1000 / 60);
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.characterMovementanimation();
     }, 105);
-    setInterval(() => {
+    setStoppableInterval(() => {
      this.idleAnimation();
-    }, 120);
+    }, 120); 
   }
 
   idleAnimation() {
@@ -133,7 +138,11 @@ updateCollectables(amount) {
 
   characterMovementanimation() {
     if (this.isDead()) {
-      this.playAnimation(this.IMAGES_DEAD);
+      if (!this.isDeadFlag) {
+        this.isDeadFlag = true;
+        this.playAnimation(this.IMAGES_DEAD);
+        // stopGame(); //später schauen das das letzte bild immmer dasd dead img ist und dann grey game over screen und buttons zum restart
+      }
     } else if (this.isHurt()) {
       this.playAnimation(this.IMAGES_HURT);
       this.hurt_sound.play();
@@ -156,12 +165,12 @@ updateCollectables(amount) {
   handleMovement() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.otherDirection = false;
-      this.moveRight(); // Character is moving, not sleeping
+      this.moveRight(); 
       this.detectMovement();
     }
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.otherDirection = true;
-      this.moveleft(); // Character is moving, not sleeping
+      this.moveleft(); 
       this.detectMovement();
     }
     if (this.world.keyboard.UP && !this.isAboveGround()) {
@@ -170,7 +179,7 @@ updateCollectables(amount) {
         this.detectMovement();
       }
 
-    // Check if character is moving and play walking sound
+    // Check if character is moving and play walkkking sound
     if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) {
       if (this.walking_sound.paused) {
         this.walking_sound.currentTime = 0; // Reset sound to start
@@ -201,11 +210,12 @@ updateCollectables(amount) {
     if (this.idleTimeout) {
       clearTimeout(this.idleTimeout);
     }
-
     // Set a new timeout to set isSleeping to true after 10 seconds
     this.movementTimeout = setTimeout(() => {
+      if(!this.isDead()){
       this.isSleeping = true; // Set sleeping state after inactivity
       this.playAnimation(this.IMAGES_SLEEPING);
+    }
     }, this.sleepDuration);
 
     // Set a new timeout to set isIdle to true after 1 second

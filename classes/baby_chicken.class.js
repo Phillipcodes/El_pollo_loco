@@ -2,6 +2,12 @@ class BabyChicken extends MovableObject {
     y = 360
     height = 50;
     width =  60;
+    // offset = {
+    //   top: 10, //offset x iist links y top  width is right height is bottom
+    //   bottom: 15,
+    //   left: 20,
+    //   right: 20,
+    // };
    IMAGES_WALKING = ['./img/3_enemies_chicken/chicken_small/1_walk/1_w.png','./img/3_enemies_chicken/chicken_small/1_walk/2_w.png','./img/3_enemies_chicken/chicken_small/1_walk/3_w.png'];
     constructor(group,index) {
        super().loadImage(this.IMAGES_WALKING[0]); 
@@ -12,11 +18,13 @@ class BabyChicken extends MovableObject {
     }
    
     animate() {
-      setInterval(() => {
+      setStoppableInterval(() => {
+
         this.moveleft();
       }, 1000 /60);
       
-        setInterval(() => {
+      setStoppableInterval(() => {
+
       this.playAnimation(this.IMAGES_WALKING);
       
         }, 210 )
