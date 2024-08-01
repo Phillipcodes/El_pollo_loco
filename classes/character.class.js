@@ -2,8 +2,8 @@ class Character extends MovableObject {
   height = 250;
   y = 185; //standard valuve 155
   offset = {
-    top: 100, //offset x iist links y top  width is right height is bottom
-    bottom: 15,
+    top: 50, //offset x iist links y top  width is right height is bottom
+    bottom: 5,
     left: 20,
     right: 20,
   };
@@ -68,7 +68,7 @@ class Character extends MovableObject {
 
   bottleAmount = 0;
   bottleMax = 0;
-
+  hasBounced = false;
   walking_sound = SoundManager.getSound('walk');
   idle_sound = SoundManager.getSound('idle');
   jump_sound = SoundManager.getSound('jump');
@@ -111,10 +111,22 @@ updateCollectables(amount) {
   this.collect_sound.play();
  
 }
-updateFalling() {
-  // Hier kannst du den Fallzustand aktualisieren
-  this.isFalling = this.speedY > 0; // Nur wenn der Charakter nach unten bewegt wird, ist er am Fallen
+
+bounce() {
+  if (!this.hasBounced) {
+    this.speedY = 10; // Passt den Wert an, um die Intensität des Bounces zu steuern
+    this.hasBounced = true; // Setze die Flagge, um den Bounce nur einmal auszulösen
+    
+    // setTimeout(() => {
+    //     this.speedY = 0; // Setze die Geschwindigkeit nach kurzer Zeit zurück
+    // }, 100); // Dauer des Bounces, hier 100ms
 }
+}
+
+resetBounce() {
+  this.hasBounced = false; // Setze die Flagge zurück, wenn der Charakter den Boden erreicht oder sich bewegt
+}
+
 
   animate() {
     setStoppableInterval(() => {
@@ -175,9 +187,11 @@ updateFalling() {
     }
     if (this.world.keyboard.UP && !this.isAboveGround()) {
         this.jump();
+        
         this.jump_sound.play();
         this.detectMovement();
       }
+      
 
     // Check if character is moving and play walkkking sound
     if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) {

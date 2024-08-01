@@ -7,6 +7,7 @@ class SoundManager {
         idle: new Audio('./audio/03 ASLEEP_ESP_SOUND V2.mp3'),
         collect: new Audio('./audio/collect.mp3'),
         pepeFull: new Audio('./audio/02 HOT SAUCE_ESP_SOUND.mp3'), // Idle-Sound hinzufügen
+        chickenDead: new Audio ('./audio/jumpOnHead.mp3')
       };
 
 

@@ -32,14 +32,33 @@ sounds = [];
  run() {
    
     setInterval(() => {
-      this.checkEnemyCollison();
+      this.checkEnemyCollision();
       this.checkThrowObject();
-      this.checkBottleCollison(); 
-      this.checkCoinCollison();
+      this.checkBottleCollision(); 
+      this.checkCoinCollision();
       this.checkCollisionThrow();
       this.checkCollisionAbove();
       this.updateThrow();
+      this.checkEndbossActivation();
+      
     }, 100);
+  }
+
+
+  checkEndbossActivation() {
+    setInterval(() => {
+      this.level.enemies.forEach(enemy => {
+        if (enemy instanceof Endboss) {
+          this.activateEndboss(enemy);
+        }
+      });
+    }, 100); // Überprüfe alle 100ms
+  }
+
+  activateEndboss(endboss) {
+    if (Math.abs(this.character.x - endboss.x) < 500) { // Reichweite (500px hier als Beispiel)
+      endboss.startMoving(); // Füge diese Methode in der Endboss-Klasse hinzu
+    }
   }
 
 
@@ -62,19 +81,28 @@ sounds = [];
   }
 
 
-  checkEnemyCollison() {
+  checkEnemyCollision() {
     this.level.enemies.forEach(enemy => {
-      if(this.character.isColliding(enemy)) {
-        console.log('collison detected', enemy);
-        this.character.hit(enemy.DMG);
-        this.statusbar.setPercentage(this.character.health)
+
+      if (enemy.isDead) {
+        // Skip dead enemies
+        return;
       }
-      
+
+      if (this.character.isColliding(enemy)) {
+        if (!this.character.isCollidingAbove(enemy)) {
+          // Apply damage only if the collision is not from above
+          console.log('Collision detected', enemy);
+          this.character.hit(enemy.DMG);
+          this.statusbar.setPercentage(this.character.health);
+        }
+
+      }
     });
-          
   }
 
-  checkBottleCollison() {
+  
+  checkBottleCollision() {
     this.level.bottles.forEach(bottle => {
       if(this.character.isColliding(bottle)) {
         console.log('collison detected', bottle);
@@ -89,27 +117,37 @@ sounds = [];
           
   }
 
+ 
 
 
   checkCollisionAbove() {
     this.level.enemies.forEach(enemy => {
+
+      if (enemy.isDead) {
+        // Skip dead enemies
+        return;
+      }
+      
+
         if (this.character.isCollidingAbove(enemy)) {
             console.log('Collision detected above', enemy);
             
             // Der Charakter springt und erhält Schaden
             this.character.bounce(); 
-            this.character.hit(this.character.DMG);
+            
+            enemy.die();
             
             // Entferne das Huhn aus dem Level
             this.level.removeEnemy(enemy);
         }
+    
     });
 }
 
 
   
 
-  checkCoinCollison() {
+  checkCoinCollision() {
     this.level.coins.forEach(coin => {
       if(this.character.isColliding(coin)) {
         console.log('collison detected', coin);
@@ -207,6 +245,10 @@ sounds = [];
 
 updateThrow() {
   this.throwableObjects = this.throwableObjects.filter(obj => !obj.shouldRemove());
+}
+
+checkEndbossDistance() {
+ return this.character.x
 }
 
 }

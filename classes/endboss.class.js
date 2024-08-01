@@ -9,21 +9,31 @@ class Endboss extends MovableObject {
       right:30
   
     }
+    isDead=false
    IMAGES_WALKING = ['./img/4_enemie_boss_chicken/1_walk/G1.png','./img/4_enemie_boss_chicken/1_walk/G2.png','./img/4_enemie_boss_chicken/1_walk/G3.png','./img/4_enemie_boss_chicken/1_walk/G4.png'];
     constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
-    this.x =  800
-    this.speed = 0.35 + Math.random() * 0.5
+    this.x =  2200
+    this.speed = 0.9 + Math.random() * 0.5
+    
     this.animate();
     }
    
-    animate() {
-        // this.moveleft();
-        setStoppableInterval(() => {
-        this.playAnimation(this.IMAGES_WALKING);
-        
-          },210 )
-        }
-  
+     animate() {
+    setStoppableInterval(() => {
+      if (this.isMoving) {
+        this.moveleft(); // Oder andere Bewegungsmethode
+       
+      }
+    }, 1000/60);
+    setInterval(() => {
+      this.playAnimation(this.IMAGES_WALKING);
+    }, 180);
+    
+  }
+
+  startMoving() {
+    this.isMoving = true; // Setze den Endboss in Bewegung
+  }
 }

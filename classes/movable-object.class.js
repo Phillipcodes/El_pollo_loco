@@ -19,20 +19,28 @@ class MovableObject extends DrawableObject{
   health = 100;
   DMG = 10;
   lastHit = 0;
- 
 
 
 
-  hit(enemy) {
-    this.health -= enemy;
-    if(this.health < 0) {
-        this.health = 0;
-    }else {
-        this.lastHit = new Date().getTime();
-    }
- 
+  die() {
+    this.isDead = true;
+    this.speed = 0; // Stoppe die Bewegung
+    this.loadImage(this.IMAGES_DEAD[0]); // Bild für das tote Huhn
+   
+    
   }
 
+
+  hit(damage, fromAbove = false) {
+    if (!fromAbove) { // Schaden nur anwenden, wenn nicht von oben
+      this.health -= damage;
+      if (this.health < 0) {
+        this.health = 0;
+      } else {
+        this.lastHit = new Date().getTime(); // Zeit des letzten Schadens speichern
+      }
+    }
+  }
 
   isHurt() {
     let timepassed  = new Date().getTime() - this.lastHit // difference  in ms
@@ -46,26 +54,20 @@ class MovableObject extends DrawableObject{
   }
 
 
-//   drawFrame2(ctx) {
-//     if (this instanceof Character || this instanceof Chicken || this instanceof BabyChicken || this instanceof Endboss) {
-//       ctx.beginPath();
-//       ctx.lineWidth = "5";
-//       ctx.strokeStyle = "red";
-//       ctx.rect(this.x, this.y, this.width, this.height);
-//       ctx.stroke();
-//     }
-//   }
 
   applyGravity() {
     setStoppableInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
           this.y -= this.speedY;
           this.speedY -= this.acceleration;
-
+          this.inAir = false
+        if(this.hasBounced == true) {
+          this.resetBounce()
+        }
           if (this.y >= 350 &&  this.isAboveGround()) {
-            this.y = 350; // Stelle sicher, dass y nicht unter den Boden sinkt
-            this.speedY = 0; // Stoppe die Bewegung auf der Y-Achse
-            this.resetBounce(); // Setze die Bounce-Flagge zurück, wenn der Charakter den Boden erreicht
+            this.y = 350; 
+            this.speedY = 0; 
+            this.inAir = false
         }
       }
   }, 1000 / 60);
@@ -75,7 +77,7 @@ class MovableObject extends DrawableObject{
     if((this instanceof ThrowableObject)) {
        return this.y < 350 
     }else {
-        return this.y < 185;
+        return this.y < 170;
     }
 
   }
@@ -86,6 +88,7 @@ class MovableObject extends DrawableObject{
       this.isSleeping = false;
       this.speedY = 13;
       this.currentImage = 0;
+      
     
   }
 
@@ -108,4 +111,9 @@ class MovableObject extends DrawableObject{
     const offset = index * innerGroupSpacing; // Abstand zwischen den Hühnern
     return baseX + offset;
   }
+
+
+
+
+
 }

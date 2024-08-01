@@ -13,7 +13,19 @@ class Level {
         this.coins = coins
         this.bottles = bottles
     }
-    removeEnemy(enemyToRemove) {
-        this.enemies = this.enemies.filter(enemy => enemy !== enemyToRemove);
-    }
+    // removeEnemy(enemyToRemove) {
+    //     setTimeout(() => {
+    //         this.enemies = this.enemies.filter(enemy => enemy !== enemyToRemove);
+    //     }, 1000);
+        
+    // }
+    removeEnemy(enemy) {
+        setTimeout(() => {
+            this.enemies = this.enemies.filter(e => e !== enemy);
+        }, 3000);
+        
+      }
+  
+    
+    
 }

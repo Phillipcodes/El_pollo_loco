@@ -7,7 +7,6 @@ class DrawableObject {
     height = 150;
     width = 100;
     isDeadFlag = false;
-    hasBounced = false;
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
       }
@@ -29,20 +28,7 @@ class DrawableObject {
 
       
 
-      bounce() {
-        if (!this.hasBounced) {
-          this.speedY = 100; // Passt den Wert an, um die Intensität des Bounces zu steuern
-          this.hasBounced = true; // Setze die Flagge, um den Bounce nur einmal auszulösen
-          
-          setTimeout(() => {
-              this.speedY = 0; // Setze die Geschwindigkeit nach kurzer Zeit zurück
-          }, 100); // Dauer des Bounces, hier 100ms
-      }
-  }
-
-     resetBounce() {
-        this.hasBounced = false; // Setze die Flagge zurück, wenn der Charakter den Boden erreicht oder sich bewegt
-    }
+     
     
       isColliding(mo) {
         return (
@@ -52,17 +38,30 @@ class DrawableObject {
           this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
         );
       }
-      isCollidingAbove(mo) {
-        // Überprüfe, ob der Charakter oberhalb des Gegners ist
-        const isAbove = this.y + this.height - this.offset.bottom < mo.y + mo.offset.top;
-        // Überprüfe, ob der Charakter horizontal über dem Gegner liegt
-        const isHorizontallyOverlapping = 
-            this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-            this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
-            
-        return isAbove && isHorizontallyOverlapping;
-    }
+ isCollidingAbove(mo) {
+    // Berechne den unteren Rand des Kollisionserkennungsbereichs des Charakters
+    const charBottom = this.y + this.height - this.offset.bottom;
 
+    // Berechne den oberen Rand des Kollisionserkennungsbereichs des Gegners
+    const moTop = mo.y + mo.offset.top;
+
+    // Berechne den Abstand zwischen dem unteren Rand des Charakters und dem oberen Rand des Gegners
+    const verticalDistance = charBottom - moTop;
+
+    // Definiere einen kleinen Puffer, um die Kollisionserkennung präziser zu machen
+    const collisionBuffer = 25; // Dieser Wert kann angepasst werden
+
+    // Überprüfe, ob der Charakter sich nur dann direkt über dem Gegner befindet
+    const isAbove = verticalDistance <= collisionBuffer && verticalDistance >= -collisionBuffer;
+
+    // Überprüfe die horizontale Überlappung
+    const isHorizontallyOverlapping =
+        this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+        this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
+
+    // Die Kollision wird nur dann als „von oben“ erkannt, wenn die Bedingung erfüllt ist
+    return isAbove && isHorizontallyOverlapping;
+}
   drawFrame(ctx) {
     if (this.setDrawFrameInstance()) {
       ctx.beginPath();
@@ -105,7 +104,7 @@ class DrawableObject {
     }
   }
 
-  playAnimation(images) {
+  playAnimation(images) { 
     let i = this.currentImage % images.length;
     let path = images[i];
     this.img = this.imageCache[path];
