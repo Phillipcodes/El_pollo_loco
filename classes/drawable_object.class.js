@@ -25,9 +25,6 @@ class DrawableObject {
         });
       }
 
-
-      
-
      
     
       isColliding(mo) {

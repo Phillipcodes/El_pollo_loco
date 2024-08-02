@@ -2,7 +2,7 @@ class World {
   character = new Character();
   level = level1;
  
-sounds = [];
+
   canvas; 
   ctx;
   keyboard;
@@ -10,8 +10,9 @@ sounds = [];
   statusbar = new StatusBar();
   coinbar = new CoinBar();
   bottlebar = new BottleBar();
+  endbossBar = new EndbossBar();
   throwableObjects = [];
-  
+  lineOfSight = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -21,7 +22,7 @@ sounds = [];
     this.setWorld();
     this.character.setMax(this.level.coins.length,this.level.bottles.length);
     this.run();
-    this.sounds = [ ...this.character.sounds,];
+    
   }
 
   setWorld() {
@@ -52,12 +53,12 @@ sounds = [];
           this.activateEndboss(enemy);
         }
       });
-    }, 100); // Überprüfe alle 100ms
+    }, 100);
   }
 
   activateEndboss(endboss) {
-    if (Math.abs(this.character.x - endboss.x) < 500) { // Reichweite (500px hier als Beispiel)
-      endboss.startMoving(); // Füge diese Methode in der Endboss-Klasse hinzu
+    if (Math.abs(this.character.x - endboss.x) < 450) { 
+      endboss.startMoving(); 
     }
   }
 
@@ -85,13 +86,13 @@ sounds = [];
     this.level.enemies.forEach(enemy => {
 
       if (enemy.isDead) {
-        // Skip dead enemies
+        // Skips dead enemies
         return;
       }
 
       if (this.character.isColliding(enemy)) {
         if (!this.character.isCollidingAbove(enemy)) {
-          // Apply damage only if the collision is not from above
+       
           console.log('Collision detected', enemy);
           this.character.hit(enemy.DMG);
           this.statusbar.setPercentage(this.character.health);
@@ -124,7 +125,7 @@ sounds = [];
     this.level.enemies.forEach(enemy => {
 
       if (enemy.isDead) {
-        // Skip dead enemies
+      
         return;
       }
       
@@ -132,12 +133,11 @@ sounds = [];
         if (this.character.isCollidingAbove(enemy)) {
             console.log('Collision detected above', enemy);
             
-            // Der Charakter springt und erhält Schaden
+         
             this.character.bounce(); 
             
             enemy.die();
-            
-            // Entferne das Huhn aus dem Level
+           
             this.level.removeEnemy(enemy);
         }
     
@@ -158,16 +158,46 @@ sounds = [];
       }
       
     });
-          
+    
   }
 
-   checkCollisionThrow() {
+  checkCollisionThrow() {
     this.throwableObjects.forEach(thr => {
-      if (thr.isThrown) { // Überprüfe nur geworfene Objekte
-        thr.checkCollisionWithEnemies(this.level.enemies);
+      if (thr.isThrown && !thr.hasHit) { 
+        let hit = false;
+        this.level.enemies.forEach(enemy => {
+          if (thr.isColliding(enemy)) {
+            if (!thr.hasHit) { 
+              thr.hasHit = true; 
+              thr.bottleHit = true
+              this.updateEndbossStatusBar(thr.DMG);
+              
+            }
+            hit = true;
+          }
+        });
+  
+        if (hit) {
+       
+          
+        }
       }
     });
   }
+
+  updateEndbossStatusBar(thr) {
+    const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+    if (endboss) {
+      endboss.hit(thr)
+
+      this.endbossBar.setPercentage(endboss.health);
+      
+    } if(endboss.health == 0) {
+      endboss.die()
+    }
+  }
+
+  
   
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -183,7 +213,7 @@ sounds = [];
     this.ctx.translate(-this.camera_x, 0);
     self = this;
     requestAnimationFrame(function () { 
-      //draw wird immer wieder ausgeführt
+     
       self.draw();
     });
   }
@@ -193,7 +223,11 @@ sounds = [];
     this.addToMap(this.statusbar)
     this.addToMap(this.coinbar)
     this.addToMap(this.bottlebar)
-    this.ctx.translate(this.camera_x, 0);// forwards to makke sure statur line is on same postiton
+    if(this.isEndbossClose()) {
+      this.addToMap(this.endbossBar)
+    }
+   
+    this.ctx.translate(this.camera_x, 0);
   }
 
   addObjectsToMap(objects) {
@@ -250,5 +284,16 @@ updateThrow() {
 checkEndbossDistance() {
  return this.character.x
 }
+
+isEndbossClose() {
+  const characterX = this.character.x;
+  const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+  const endbossX = endboss.x;
+  const distance = Math.abs(characterX - endbossX);
+
+  return distance < 600; // gives back true when the distance is less than 600 px
+}
+
+
 
 }

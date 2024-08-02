@@ -75,11 +75,10 @@ class Character extends MovableObject {
   hurt_sound = SoundManager.getSound('hit');
   full_sound = SoundManager.getSound('pepeFull')
   collect_sound = SoundManager.getSound('collect')
-  sounds = [];
+  
 
   constructor() {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
-    this.sounds.push(this.walking_sound, this.idle_sound, this.jump_sound, this.hurt_sound);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_SLEEPING);
     this.loadImages(this.IMAGES_IDLE);

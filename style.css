@@ -6,6 +6,11 @@ body {
     justify-content: center;
     margin: 0;
     font-family: RioGrande;
+    background-image: url('./img/background.svg');
+    background-repeat: no-repeat;
+    /* background-position: center bottom; */
+    background-size: cover ;
+
 }
 
 h1 {
@@ -15,6 +20,8 @@ h1 {
 
 canvas {
     background-color: black;
+    border: solid black 5px;
+    border-radius: 10px;
 }
 
 .overlay {

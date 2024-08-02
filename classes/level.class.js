@@ -4,9 +4,16 @@ class Level {
     BackgroundObjects;
     coins;
     bottles;
+    world;
     level_end_x = 2200
 
-    constructor(enemies,clouds,BackgroundObjects,coins,bottles) {
+    constructor(enemies,clouds,BackgroundObjects,coins,bottles,world) {
+        this.enemies = enemies.map(enemy => {
+            if (enemy instanceof Endboss) {
+                return new Endboss(world); // Übergebe die World-Instanz hier
+            }
+            return enemy;
+        });
         this.enemies = enemies;
         this.clouds = clouds;
         this.BackgroundObjects = BackgroundObjects;

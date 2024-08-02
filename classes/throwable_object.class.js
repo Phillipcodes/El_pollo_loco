@@ -2,7 +2,7 @@ class ThrowableObject extends MovableObject {
     throw_sound = SoundManager.getSound('throw')
     sounds = [SoundManager.getSound('throw')];
     isThrown = false
-    bootleHit = false 
+    bottleHit = false 
     removeAfter = 0.15; // Zeit in Sekunden nach Kollision oder Bodenkontakt
     touchdownTime = null;
     IMAGES_SPIN = ['./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png','./img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png','./img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png','./img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',];
@@ -13,6 +13,7 @@ class ThrowableObject extends MovableObject {
                        './img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
                        './img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ];
+    DMG = 20
     constructor(x,y,range) {
         super().loadImage('./img/6_salsa_bottle/salsa_bottle.png')
         this.loadImages(this.IMAGES_SPIN)
@@ -51,7 +52,7 @@ class ThrowableObject extends MovableObject {
             this.handleTouchdown()
              // Stoppe das Intervall für die horizontale Bewegung
           }
-          if(this.bootleHit == true) {
+          if(this.bottleHit == true) {
             this.removeAfter = 0.004
             this.playAnimation(this.IMAMGES_SPLASH)
             this.handleTouchdown()
@@ -59,32 +60,7 @@ class ThrowableObject extends MovableObject {
         }, 1000 / 60);
       }
 
-      checkCollisionWithEnemies(enemies) {
-        enemies.forEach(enemy => {
-          if (this.isColliding(enemy)) {
-            console.log('Kollision mit Gegner erkannt:', enemy);
-            
-            this.bootleHit = true;
-            // this.handleCollisionWithEnemy(enemy); // Verarbeite die Kollision
-       
-          }
-          
-        });
-      }
 
-
-
-//   handleCollisionWithEnemy(enemy) {
-//     // Hier kannst du die Logik implementieren, die ausgeführt werden soll, wenn eine Kollision auftritt
-//     console.log('Gegner getroffen:', enemy);
-//     // Beispiel: Reduziere die Gesundheit des Gegners oder entferne ihn
-//     enemy.health -= this.DMG; // Verwende den DMG-Wert des `ThrowableObject`
-//     if (enemy.health <= 0) {
-//       // Entferne den Gegner, wenn seine Gesundheit auf 0 oder weniger sinkt
-//       // Hier musst du möglicherweise den Gegner aus der Gegner-Liste entfernen
-//     }
-//     this.isThrown = false; // Setze den Status zurück, wenn die Kollision verarbeitet ist
-//   }
 
 
 

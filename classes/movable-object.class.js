@@ -112,6 +112,7 @@ class MovableObject extends DrawableObject{
     return baseX + offset;
   }
 
+ 
 
 
 
