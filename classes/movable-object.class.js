@@ -76,17 +76,21 @@ class MovableObject extends DrawableObject{
   isAboveGround() {
     if((this instanceof ThrowableObject)) {
        return this.y < 350 
-    }else {
+    }if(this instanceof BabyChicken) {
+      return this.y < 350
+    }
+
+    else {
         return this.y < 170;
     }
 
   }
 
 
-  jump() {
+  jump(speedY) {
       this.inAir = true;
       this.isSleeping = false;
-      this.speedY = 13;
+      this.speedY = speedY
       this.currentImage = 0;
       
     
@@ -104,13 +108,6 @@ class MovableObject extends DrawableObject{
 
 
 
-  setStartXEnemieGroup(group, index) {
-    const groupSpacing = 550; // Abstand zwischen den Gruppen
-    const innerGroupSpacing = 150; // Abstand zwischen den Hühnern innerhalb der Gruppe
-    const baseX = 400 + (group - 1) * groupSpacing; // Basisposition je nach Gruppe
-    const offset = index * innerGroupSpacing; // Abstand zwischen den Hühnern
-    return baseX + offset;
-  }
 
  
 

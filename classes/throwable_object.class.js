@@ -13,7 +13,11 @@ class ThrowableObject extends MovableObject {
                        './img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
                        './img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ];
-    DMG = 20
+    DMG = 100
+    lastThrowTime = 0; // Zeitstempel des letzten Wurfs
+    throwCooldown = 2000; // Cooldown in Millisekunden (2 Sekunden)
+    throwInterval = null;
+
     constructor(x,y,range) {
         super().loadImage('./img/6_salsa_bottle/salsa_bottle.png')
         this.loadImages(this.IMAGES_SPIN)
@@ -23,8 +27,6 @@ class ThrowableObject extends MovableObject {
         range = range
         this.height = 70
         this.width = 70
-      
-        this.throw(range)
        
     }
 
@@ -39,6 +41,9 @@ class ThrowableObject extends MovableObject {
     }
 
     throw(range) {
+
+      
+
         this.setThrowStart();
         // Wurf-Intervall für horizontale Bewegung
         this.throwInterval = setInterval(() => {

@@ -77,14 +77,6 @@ class DrawableObject {
     }
   }
 
-  setCollectablesPoint(group, index) {
-    const groupSpacing = 550; // Abstand zwischen den Gruppen
-    const innerGroupSpacing = 150; // Abstand zwischen den Hühnern innerhalb der Gruppe
-    const baseX = 400 + (group - 1) * groupSpacing; // Basisposition je nach Gruppe
-    const offset = index * innerGroupSpacing; // Abstand zwischen den Hühnern
-    return baseX + offset;
-  }
-
 
   setDrawFrameInstance() {
    return this instanceof Character || this instanceof Chicken || this instanceof BabyChicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle
@@ -111,5 +103,25 @@ class DrawableObject {
       this.currentImage = i; // Setze das Bild auf das letzte Bild
     }
   }
+
+
+  
+  setStartXEnemieGroup(group, index) {
+    const groupSpacing = 550 * Math.random()  + 115; // Abstand zwischen den Gruppen
+    const innerGroupSpacing = 205; // Abstand zwischen den Hühnern innerhalb der Gruppe
+    const baseX = 400 + (group - 1) * groupSpacing; // Basisposition je nach Gruppe
+    const offset = index * innerGroupSpacing +25; // Abstand zwischen den Hühnern
+    return baseX + offset;
+  }
+
+  
+  setCollectablesPoint(group, index) {
+    const groupSpacing = 420; // Abstand zwischen den Gruppen
+    const innerGroupSpacing = 120; // Abstand zwischen den Hühnern innerhalb der Gruppe
+    const baseX = 400 + (group - 1) * groupSpacing; // Basisposition je nach Gruppe
+    const offset = index * innerGroupSpacing; // Abstand zwischen den Hühnern
+    return baseX + offset;
+  }
+
 
 }

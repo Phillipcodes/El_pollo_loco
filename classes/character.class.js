@@ -2,8 +2,8 @@ class Character extends MovableObject {
   height = 250;
   y = 185; //standard valuve 155
   offset = {
-    top: 50, //offset x iist links y top  width is right height is bottom
-    bottom: 5,
+    top: 85, //offset x iist links y top  width is right height is bottom
+    bottom: 10,
     left: 20,
     right: 20,
   };
@@ -62,19 +62,18 @@ class Character extends MovableObject {
   world;
   DMG = 10;
   speed = 4;
- 
   coinAmount = 0;
     coinMax = 0;
 
   bottleAmount = 0;
   bottleMax = 0;
   hasBounced = false;
-  walking_sound = SoundManager.getSound('walk');
-  idle_sound = SoundManager.getSound('idle');
-  jump_sound = SoundManager.getSound('jump');
-  hurt_sound = SoundManager.getSound('hit');
-  full_sound = SoundManager.getSound('pepeFull')
-  collect_sound = SoundManager.getSound('collect')
+  walking_sound = SoundManager.getSound('walk', 0.2);
+  idle_sound = SoundManager.getSound('idle', 0.2);
+  jump_sound = SoundManager.getSound('jump', 0.2);
+  hurt_sound = SoundManager.getSound('hit', 0.2);
+  full_sound = SoundManager.getSound('pepeFull', 0.2)
+  collect_sound = SoundManager.getSound('collect', 0.2)
   
 
   constructor() {
@@ -116,9 +115,6 @@ bounce() {
     this.speedY = 10; // Passt den Wert an, um die Intensität des Bounces zu steuern
     this.hasBounced = true; // Setze die Flagge, um den Bounce nur einmal auszulösen
     
-    // setTimeout(() => {
-    //     this.speedY = 0; // Setze die Geschwindigkeit nach kurzer Zeit zurück
-    // }, 100); // Dauer des Bounces, hier 100ms
 }
 }
 
@@ -152,14 +148,14 @@ resetBounce() {
       if (!this.isDeadFlag) {
         this.isDeadFlag = true;
         this.playAnimation(this.IMAGES_DEAD);
-        // stopGame(); //später schauen das das letzte bild immmer dasd dead img ist und dann grey game over screen und buttons zum restart
+        pepeDead();
       }
     } else if (this.isHurt()) {
       this.playAnimation(this.IMAGES_HURT);
       this.hurt_sound.play();
   
     } else if (this.isAboveGround()) {
-      this.playAnimation(this.IMAGES_JUMPING);
+     this.handleJumpAnimation()
     } else {
       if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
         this.playAnimation(this.IMAGES_WALKING);
@@ -185,7 +181,7 @@ resetBounce() {
       this.detectMovement();
     }
     if (this.world.keyboard.UP && !this.isAboveGround()) {
-        this.jump();
+        this.jump(this.speedY= 11);
         
         this.jump_sound.play();
         this.detectMovement();
@@ -233,7 +229,7 @@ resetBounce() {
 
     // Set a new timeout to set isIdle to true after 1 second
     this.idleTimeout = setTimeout(() => {
-      if (!this.isSleeping) {
+      if (!this.isSleeping && !this.isDead()) {
         this.isIdle = true; // Set idle state after 1 second of inactivity
         this.playAnimation(this.IMAGES_IDLE); // Optional: Use idle images if different
       }
@@ -245,6 +241,18 @@ resetBounce() {
     this.resetMovementTimeout(); // Reset movement timeout
   }
 
-
+handleJumpAnimation() {
+  let i = 0
+  if(i < this.IMAGES_JUMPING.length) {
+    this.playAnimation(this.IMAGES_JUMPING)
+    i++
+  }else {
+    this.setMovementAnimation();
+  }
+  if(!this.isAboveGround()) {  // vllt eine attackk erstellen wo er kurz stehen bleibt und seine attack animation bekkommt und dann 3 sekkunden lang schnell rennt 
+    i = 0 
+    this.firstContact= true
+  }
+}
 
 }

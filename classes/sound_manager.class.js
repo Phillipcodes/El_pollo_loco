@@ -8,13 +8,21 @@ class SoundManager {
         collect: new Audio('./audio/collect.mp3'),
         pepeFull: new Audio('./audio/02 HOT SAUCE_ESP_SOUND.mp3'), // Idle-Sound hinzufügen
         chickenDead: new Audio ('./audio/jumpOnHead.mp3'),
-        endBossScream: new Audio ('./audio/chickenboss_scream.mp3')
+        endBossScream: new Audio ('./audio/chickenboss_scream.mp3'),
+        backgroundMusic: new Audio ('./audio/background_music.mp3')
       };
 
-
-  static getSound(soundName) {
-    return this.sounds[soundName];
-  }
+      static getSound(soundName, volume = 1.0) {
+        const sound = this.sounds[soundName];
+        if (sound) {
+          sound.volume = volume; // Setze die Lautstärke
+          return sound;
+        } else {
+          console.warn(`Sound "${soundName}" not found.`);
+          return null;
+        }
+      }
+    
 
   static muteAll() {
     Object.values(this.sounds).forEach(sound => {
@@ -22,6 +30,13 @@ class SoundManager {
     });
   }
 
+  static muteBackground() {
+    const bgSound = this.sounds['backgroundMusic'];
+    if (bgSound) {
+      bgSound.muted = true; }
+    }
+
+    
   static unmuteAll() {
     Object.values(this.sounds).forEach(sound => {
       sound.muted = false;

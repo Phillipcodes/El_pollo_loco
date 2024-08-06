@@ -1,8 +1,8 @@
 class World {
   character = new Character();
   level = level1;
- 
-
+  lastThrowTime = 0; // Statische Variable für globalen Cooldown
+  throwCooldown = 1400;
   canvas; 
   ctx;
   keyboard;
@@ -12,7 +12,7 @@ class World {
   bottlebar = new BottleBar();
   endbossBar = new EndbossBar();
   throwableObjects = [];
-  lineOfSight = false;
+  background_sound = SoundManager.getSound('backgroundMusic',0.4)
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -22,6 +22,7 @@ class World {
     this.setWorld();
     this.character.setMax(this.level.coins.length,this.level.bottles.length);
     this.run();
+    this.background_sound.play()
     
   }
 
@@ -62,24 +63,53 @@ class World {
     }
   }
 
-
-  checkThrowObject() {
-    if(this.keyboard.SPACE && this.character.bottleAmount > 0) {
-      let throwRange = 10;
-      let xOffset = 40;
-      if(this.character.otherDirection == true) {
-        throwRange = -10
-        xOffset = -30
-      }
-      let bottle = new ThrowableObject(this.character.x + xOffset ,this.character.y + 100, throwRange);
-      this.throwableObjects.push(bottle);
-      this.character.bottleAmount--
-      let setBottlePercentage = this.character.bottleAmount * 100 / this.character.bottleMax 
-      this.bottlebar.setPercentage(setBottlePercentage)
-     }
- 
+  checktThrowCoolDown() {
     
   }
+
+  checkThrowObject() {
+    if (this.isThrowAllowed()) {
+        this.lastThrowTime = Date.now();
+        let { throwRange, xOffset } = this.setThrowParameters();
+        let bottle = this.createBottle(xOffset, throwRange);
+        this.throwableObjects.push(bottle);
+        bottle.throw(throwRange);
+        this.updateBottleAmount();
+    }
+}
+
+isThrowAllowed() {
+    const currentTime = Date.now();
+    if (this.keyboard.SPACE && this.character.bottleAmount > 0) {
+        if (currentTime - this.lastThrowTime < this.throwCooldown) {
+            console.log('Cooldown noch nicht abgelaufen.');
+            return false; // Cooldown nicht abgelaufen
+        }
+        return true; // Cooldown abgelaufen, Wurf erlaubt
+    }
+    return false; // Entweder nicht SPACE gedrückt oder keine Flaschen mehr
+}
+
+setThrowParameters() {
+    let throwRange = 10;
+    let xOffset = 40;
+    if (this.character.otherDirection) {
+        throwRange = -10;
+        xOffset = -30;
+    }
+    return { throwRange, xOffset };
+}
+
+createBottle(xOffset, throwRange) {
+    return new ThrowableObject(this.character.x + xOffset, this.character.y + 100, throwRange);
+}
+
+updateBottleAmount() {
+    this.character.bottleAmount--;
+    let setBottlePercentage = (this.character.bottleAmount * 100) / this.character.bottleMax;
+    this.bottlebar.setPercentage(setBottlePercentage);
+}
+
 
 
   checkEnemyCollision() {

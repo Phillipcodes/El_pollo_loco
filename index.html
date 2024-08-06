@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./fonts.css">
+    <script src="./js/scripts.js"></script>
     <script src="./classes/sound_manager.class.js"></script>
     <script src="./classes/keyboard.class.js"></script>
     <script src="./js/game.js"></script>
     <script src="./classes/drawable_object.class.js"></script>
     <script src="./classes/movable-object.class.js"></script>
-    <script src="./classes/none_moveable_objects.class.js"></script>
     <script src="./classes/character.class.js"></script>
     <script src="./classes/chicken.class.js"></script>
     <script src="./classes/baby_chicken.class.js"></script>
@@ -32,15 +32,78 @@
 </head>
 <body onload="init()">
     <h1>(El pollo loco)</h1>
-    <div class="overlay">
-        
+    <div id="fullscreen">
+    <div id="overlay" class="overlay">
+        <div id="start-screen">
+            <div id="play-button">
+                <img id="play-button-start" onmouseover="hoverSound()" onmouseout="hoverSoundStop()" src="./img/play.png" alt="">
+            </div>
+           
+        </div>
+        <div id="game-over-screen" class="d-none">
+            <div id="restart-button-game-over" onmouseover="hoverSound()" onmouseout="hoverSoundStop()">
+                <img src="./img/restart.png" alt="">
+            </div>
+        </div>
+        <div id="win-screen" class="d-none">
+            <div id="restart-button-win" onmouseover="hoverSound()" onmouseout="hoverSoundStop()">
+                <img src="./img/restart.png" alt="">
+            </div>
+        </div>
+    <div id="story-screen" class="stroy-panel d-none ">
+        <p>In Mexico, the fearless hero Pepe set out to defeat the dreaded villain, El Pollo Diablo, the Evil Mexican Chicken. Known for its fiery red feathers and glowing eyes, El Pollo Diablo commanded an army of fierce henchmen who terrorized villages.
+
+            Pepe's quest began at dawn, facing ambushes from the malevolent chickens. Armed with nothing but his courage and a collection of legendary hot sauces—Salsa de Fuego, Salsa del Diablo, and Salsa de la Muerte—he knew these were the key to vanquishing his foe.
+            
+            As he traveled through the desert, Pepe gathered hot sauces from villages, each with unique powers. Finally, he reached El Pollo Diablo’s fortress, guarded by an army of fierce creatures. With a burst of sizzling hot sauce, Pepe unleashed his fiery arsenal, causing chaos among the henchmen.
+            
+            El Pollo Diablo emerged, but Pepe was ready. Using the last of his hot sauce, Salsa de la Muerte, he struck a decisive blow. The heat proved too much for the evil chicken. With a final, desperate squawk, El Pollo Diablo fell, ending his reign of terror.
+            
+            Exhausted but triumphant, Pepe returned to his village as a hero. His bravery and the fiery hot sauces saved Mexico, proving that even the hottest of chickens could be defeated with courage and spice.</p>
+           
+            </div>
+    <div id="control-screen" class="controls-information d-none">
+        <div class="control-content">
+            <div class="control-line"><img src="./img/letter-w.png" alt="JUMP-CONTROL (W)">
+                <span>  JUMP</span>
+            </div>
+            <div class="control-line"><img src="./img/letter-a.png" alt="MOVE-LEFT (A)">
+                <span> MOVE RIGHT </span>
+            </div>
+            <div class="control-line"><img src="./img/letter-d.png" alt="MOVE_RIGHT (D)">
+                <span> MOVE LEFT</span>
+            </div>
+            <div class="control-line">
+                <span> SPACE </span>
+                <span> THROW A </span>
+                <img src="./img/6_salsa_bottle/salsa_bottle.png" alt="">
+                </div>
+        </div>
+        <img id="cactus-right" src="./img/cactus_icon.png" alt="">
+        <img id="cactus-left" src="./img/cactus_icon.png" alt="">
+    </div>
         <div id="mute-container" class="mute">
             <img id="sound-button" src="./img/10_overlay_icons/no_sound.png" alt="mute icon">    
+        </div>
+        <div id="fullscreen-button" onclick="fullscreen()" >
+            <img src="./img/fullscreen.png" alt="fullscreen">
+        </div>
+        <div id="restart-button">
+            <img src="./img/restart.png" alt="">
+        </div>
+        <div id="back-button">
+            <span>MENU</span>
         </div>
     <canvas id="canvas" width="720px" height="480px">
     </div>
 
     </canvas>
+</div>
+    <div class="button-line">
+        <div onmouseover="hoverSound()" onmouseout="hoverSoundStop()" onclick="openWindow('control-screen')"> <h2>Controls</h2></div>
+        <div onmouseover="hoverSound()" onmouseout="hoverSoundStop()" onclick="openWindow('story-screen')"> <h2>Story</h2>  </div>
+    </div>
+   
 
 </body>
 </html>

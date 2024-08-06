@@ -10,6 +10,7 @@ body {
     background-repeat: no-repeat;
     /* background-position: center bottom; */
     background-size: cover ;
+    cursor: default;
 
 }
 
@@ -71,6 +72,7 @@ canvas {
 
 #sound-button:hover {
     transform: scale(1.1);
+    cursor: pointer;
 }
 
 .mute {
@@ -78,4 +80,274 @@ canvas {
     top: 15px;
     left: 50%
     
+}
+
+.controls-information {
+    background-color: 	beige;
+    background-image: url('./img/wood_bg.svg');
+    background-position: center ;
+    background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        /* top: 30%; */
+        z-index: 100;
+        border: solid black 5px;
+        border-radius: 10px;
+  
+    
+    
+}
+
+.controls-information img {
+    
+    width: 100px;
+    height: 120px;
+   
+    
+}
+
+#cactus-right {
+    position: absolute;
+    right: -1%;
+    bottom: 0;
+}
+#cactus-left {
+    position: absolute;
+    left: -1%;
+    bottom: 0;
+    -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.control-content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-left: 100px;
+   
+    
+}
+
+.control-line {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.control-line:first-child {
+    padding-top: 24px;
+}
+
+.control-line:nth-child(2) {
+    padding-top: 42px;
+}
+
+.control-line:nth-child(3) {
+    padding-top: 48px;
+}
+
+.control-line:nth-child(4) {
+    padding-top: 52px;
+    padding-left: 6px;
+}
+ 
+
+.control-content img {
+    width: 72px;
+    height: 72px;
+}
+
+.control-content span {
+    font-size: 42px;
+}
+
+.button-line div:hover {
+    color: #5e1224;
+    cursor: pointer;
+    transform: scale(1.2);
+    display: flex;
+    gap: 32px;
+    
+}
+.button-line {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    width: 100%;
+}
+
+.d-none {
+    display: none;
+}
+
+.stroy-panel {
+    background-color: 	rgb(0, 0, 0);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 100;
+        border: solid rgb(172, 0, 0) 5px;
+        border-radius: 10px;
+        color: white;
+        font-family: Banditos;
+        font-size: 22px;
+        word-break: break-all;
+}
+
+.stroy-panel p {
+    padding: 12px 24px;
+
+}
+
+#capsLockWarning {
+    color: red;
+    font-size: 42px;
+}
+
+#fullscreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('./img/background.svg');
+    background-repeat: no-repeat;
+    background-size: cover ;
+}
+
+#fullscreen-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  
+   
+}
+#fullscreen-button:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+#fullscreen-button img {
+    height: 45px;
+    width: 45px;
+}
+
+#start-screen {
+ background-image: url('./img/9_intro_outro_screens/start/startscreen_1.png');
+ width: 100%;
+ height: 100%;
+ z-index: 100;
+ background-repeat: round ;
+ background-size: contain;
+ position: absolute;
+ border: solid black 5px;
+ border-radius: 10px;
+}
+
+#play-button {
+    display: flex;
+    justify-content: end;
+    padding-top: 18px;
+    padding-right: 24px;
+    
+}
+
+#play-button-start:hover   {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+#play-button img  {
+    width: 70px;
+    height: 70px;
+    
+}
+
+#restart-button {
+    position: absolute;
+    right: 5%;
+    top: 15px ;
+}
+#restart-button img  {
+    width: 45px;
+    height: 45px;
+}
+
+#restart-button:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+#game-over-screen {
+    background-image: url('./img/9_intro_outro_screens/game_over/oh\ no\ you\ lost!.png');
+    width: 100%;
+    height: 99%;
+    z-index: 100;
+    background-repeat: round ;
+    background-size: contain;
+    position: absolute;
+    /* border: solid black 5px; */
+    border-radius: 10px;
+
+   }
+
+   #restart-button-game-over {
+    position: absolute;
+    right: 47%;
+    top: 70%;
+
+   }
+
+   #restart-button-game-over img  {
+    width: 45px;
+    height: 45px;
+}
+
+#restart-button-game-over:hover   {
+    cursor: pointer;
+    transform: scale(1.1);
+
+}
+
+#back-button {
+    position: absolute;
+    left: 2%;
+    bottom: 1%;
+    font-size: 32px;
+}
+
+#back-button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    color: #5e1224;
+}
+
+#win-screen {
+    background-image: url('./img/9_intro_outro_screens/win/win_2.png');
+    width: 100%;
+    height: 99%;
+    z-index: 100;
+    background-repeat: round ;
+    background-size: contain;
+    position: absolute;
+    /* border: solid black 5px; */
+    border-radius: 10px;
+
+}
+
+#restart-button-win {
+    position: absolute;
+    right: 47%;
+    top: 70%;
+
+   }
+
+   #restart-button-win img  {
+    width: 45px;
+    height: 45px;
+}
+
+#restart-button-win:hover   {
+    cursor: pointer;
+    transform: scale(1.1);
+
 }

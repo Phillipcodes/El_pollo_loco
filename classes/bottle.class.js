@@ -13,7 +13,7 @@ class Bottle extends DrawableObject {
     constructor(group,index) { 
         super().loadImage('./img/6_salsa_bottle/1_salsa_bottle_on_ground.png'); 
         this.x = this.setCollectablesPoint(group,index) +200
-        this.y = 325
+        this.y = 325 
       
         
       
