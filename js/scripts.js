@@ -3,6 +3,11 @@
     let warningDiv;
    let CapslockOn = false
    let fullscreenOn = false
+
+
+   /**
+    * starts hover sound when hovering over the element
+    */
    async function hoverSound() {
     try {
         await thisSound.play();
@@ -11,12 +16,20 @@
     }
 }
 
+
+/**
+ * stops the hoversound when moved away form the element
+ */
 function hoverSoundStop() {
     thisSound.pause();
     thisSound.currentTime = 0;
 }
 
 
+/**
+ * toggle container based on their id 
+ * @param {string} id 
+ */
 function openWindow(id) {
  let window = document.getElementById(id);
  if(currentOpenWindow && currentOpenWindow !== window) {
@@ -26,27 +39,26 @@ function openWindow(id) {
  currentOpenWindow = window.classList.contains('d-none') ? null : window
 }
 
-
+    /**
+     * evenlistener for validating the capslock event
+     */
     window.addEventListener('keyup', (event) => {
-        // Überprüfen, ob Caps Lock aktiviert ist
         if (event.getModifierState('CapsLock')) {
-            console.log('Caps Lock ist aktiviert.');
             CapslockOn = true
-           
         } else {
-            console.log('Caps Lock ist nicht aktiviert.');
             CapslockOn = false
-           
         }
         showCapsLockWarning();
     });
 
 
+    /**
+     * shows a warining when capslock is activated
+     */
     function showCapsLockWarning() {
         const body = document.body;
         const fullscreen = body.querySelector('#fullscreen'); 
         let warningDiv = body.querySelector('#capsLockWarning');
-    
         if (CapslockOn) {
             if (!warningDiv) {
                 warningDiv = document.createElement('div');
@@ -54,17 +66,19 @@ function openWindow(id) {
                 warningDiv.textContent = 'Caps Lock is activated!';
                 if (fullscreen) {
                     body.insertBefore(warningDiv, fullscreen);
-       
                 }
             }
         } else {
             if (warningDiv) {
-        
                 warningDiv.remove();
             }
         }
     }
 
+
+    /**
+     * sets the browser to fullscreen
+     */
    function fullscreen () {
     if (!fullscreenOn) {
         openFullscreen()
@@ -75,6 +89,10 @@ function openWindow(id) {
     }
    }
 
+
+    /**
+     * opens fullscreen
+     */
   function openFullscreen() {
     let elem = document.getElementById('fullscreen');
     if (elem.requestFullscreen) {
@@ -86,6 +104,10 @@ function openWindow(id) {
     }
 }
 
+
+/**
+ * closes fullscreen
+ */
 function closeFullscreen() {
     if (document.fullscreenElement) { // Überprüfe, ob das Dokument im Vollbildmodus ist
         if (document.exitFullscreen) {
@@ -97,3 +119,24 @@ function closeFullscreen() {
         }
     }
 }
+
+
+/**
+ *  checks screenSize to display a message to rotate the mobile phone on specifc monitor size
+ */
+function checkScreenSize() {
+    const container = document.getElementById('mobile-warning');
+    const displayNoneCanvas = document.getElementById('fullscreen');
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const maxWidth = 720;
+    const minHeight = 480; 
+    if (width <= maxWidth && height >= minHeight) {
+      container.style.display = 'flex';
+      displayNoneCanvas.style.display ='none'
+    } else {
+      container.style.display = 'none';
+      displayNoneCanvas.style.display =''
+      window.addEventListener('resize', checkScreenSize);
+    }
+  }

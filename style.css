@@ -1,353 +1,421 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    justify-content: center;
-    margin: 0;
-    font-family: RioGrande;
-    background-image: url('./img/background.svg');
-    background-repeat: no-repeat;
-    /* background-position: center bottom; */
-    background-size: cover ;
-    cursor: default;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  justify-content: center;
+  margin: 0;
+  font-family: RioGrande;
+  background-image: url("./img/background.svg");
+  background-repeat: no-repeat;
+  /* background-position: center bottom; */
+  background-size: cover;
+  cursor: default;
 }
 
 h1 {
-    color: #5e1224;
-    font-size: 42px;
+  color: #5e1224;
+  font-size: 42px;
 }
 
 canvas {
-    background-color: black;
-    border: solid black 5px;
-    border-radius: 10px;
+  background-color: black;
+  border: solid black 5px;
+  border-radius: 10px;
+  display: block;
 }
 
 .overlay {
-    position: relative;
-    
+  position: relative;
 }
 
 .character-information {
-    position: absolute;
-    top: -20px;
-    left: 0px; 
-    display: flex;
-    flex-direction: column-reverse;
-    
+  position: absolute;
+  top: -20px;
+  left: 0px;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
-.collectables{
-    width: 65px;
-    height: 65px;
+.collectables {
+  width: 65px;
+  height: 65px;
 }
 
 .health {
-    width: 275px;
-    height: 85px;
+  width: 275px;
+  height: 85px;
 }
 
 .collectables-bar {
-   
-    display: flex;
-    gap: 32px;
-    color: white;
-    font-size: 24px;
+  display: flex;
+  gap: 32px;
+  color: white;
+  font-size: 24px;
 }
 
 .collectables-bar div {
-    width: 65px;
-    height: 65px;
-    display: flex;
-    align-items: center;
-
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
 }
 
 #sound-button {
-    width: 45px;
-    height: 45px;
+  width: 45px;
+  height: 45px;
 }
 
 #sound-button:hover {
-    transform: scale(1.1);
-    cursor: pointer;
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 .mute {
-    position: absolute;
-    top: 15px;
-    left: 50%
-    
+  position: absolute;
+  top: 15px;
+  left: 50%;
 }
 
 .controls-information {
-    background-color: 	beige;
-    background-image: url('./img/wood_bg.svg');
-    background-position: center ;
-    background-repeat: no-repeat;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        /* top: 30%; */
-        z-index: 100;
-        border: solid black 5px;
-        border-radius: 10px;
-  
-    
-    
+  background-color: beige;
+  background-image: url("./img/story_bg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  /* top: 30%; */
+  z-index: 100;
 }
 
 .controls-information img {
-    
-    width: 100px;
-    height: 120px;
-   
-    
+  width: 100px;
+  height: 120px;
 }
 
 #cactus-right {
-    position: absolute;
-    right: -1%;
-    bottom: 0;
+  position: absolute;
+  right: -1%;
+  bottom: 0;
 }
 #cactus-left {
-    position: absolute;
-    left: -1%;
-    bottom: 0;
-    -webkit-transform: scaleX(-1);
+  position: absolute;
+  left: -1%;
+  bottom: 0;
+  -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }
 
 .control-content {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    padding-left: 100px;
-   
-    
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 100px;
 }
 
 .control-line {
-    display: flex;
-    align-items: center;
-    gap: 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
 }
 
 .control-line:first-child {
-    padding-top: 24px;
+  padding-top: 54px;
 }
-
-.control-line:nth-child(2) {
-    padding-top: 42px;
-}
-
-.control-line:nth-child(3) {
-    padding-top: 48px;
-}
-
-.control-line:nth-child(4) {
-    padding-top: 52px;
-    padding-left: 6px;
-}
- 
 
 .control-content img {
-    width: 72px;
-    height: 72px;
+  width: 72px;
+  height: 72px;
 }
 
 .control-content span {
-    font-size: 42px;
+  font-size: 42px;
 }
 
 .button-line div:hover {
-    color: #5e1224;
-    cursor: pointer;
-    transform: scale(1.2);
-    display: flex;
-    gap: 32px;
-    
+  color: #5e1224;
+  cursor: pointer;
+  transform: scale(1.2);
+  display: flex;
+  gap: 32px;
 }
 .button-line {
-    display: flex;
-    gap: 32px;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  gap: 32px;
+  justify-content: center;
 }
 
-.d-none {
-    display: none;
+.button-line-mobile div:hover {
+  color: #5e1224;
+  cursor: pointer;
+  transform: scale(1.2);
+  display: flex;
+  gap: 32px;
+}
+.button-line-mobile {
+  display: none;
+  gap: 32px;
+  justify-content: center;
+  width: 100%;
 }
 
 .stroy-panel {
-    background-color: 	rgb(0, 0, 0);
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        z-index: 100;
-        border: solid rgb(172, 0, 0) 5px;
-        border-radius: 10px;
-        color: white;
-        font-family: Banditos;
-        font-size: 22px;
-        word-break: break-all;
+  background-image: url("./img/story_bg.jpg");
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 100;
+  color: white;
+  font-family: Banditos;
+  font-size: 22px;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
 }
 
 .stroy-panel p {
-    padding: 12px 24px;
-
+  padding: 12px 24px;
+  color: orangered;
 }
 
 #capsLockWarning {
-    color: red;
-    font-size: 42px;
+  color: red;
+  font-size: 42px;
 }
 
 #fullscreen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url('./img/background.svg');
-    background-repeat: no-repeat;
-    background-size: cover ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("./img/background.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.border-styling {
+  border: solid black 5px;
+  border-radius: 10px;
 }
 
 #fullscreen-button {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  
-   
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 #fullscreen-button:hover {
-    transform: scale(1.1);
-    cursor: pointer;
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 #fullscreen-button img {
-    height: 45px;
-    width: 45px;
+  height: 45px;
+  width: 45px;
 }
 
 #start-screen {
- background-image: url('./img/9_intro_outro_screens/start/startscreen_1.png');
- width: 100%;
- height: 100%;
- z-index: 100;
- background-repeat: round ;
- background-size: contain;
- position: absolute;
- border: solid black 5px;
- border-radius: 10px;
+  background-image: url("./img/9_intro_outro_screens/start/startscreen_1.png");
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-repeat: round;
+  background-size: contain;
+  position: absolute;
 }
 
 #play-button {
-    display: flex;
-    justify-content: end;
-    padding-top: 18px;
-    padding-right: 24px;
-    
+  display: flex;
+  justify-content: end;
+  padding-top: 18px;
+  padding-right: 24px;
 }
 
-#play-button-start:hover   {
-    cursor: pointer;
-    transform: scale(1.1);
+#play-button-start:hover {
+  cursor: pointer;
+  transform: scale(1.1);
 }
 
-#play-button img  {
-    width: 70px;
-    height: 70px;
-    
+#play-button img {
+  width: 70px;
+  height: 70px;
 }
 
 #restart-button {
-    position: absolute;
-    right: 5%;
-    top: 15px ;
+  position: absolute;
+  right: 5%;
+  top: 15px;
 }
-#restart-button img  {
-    width: 45px;
-    height: 45px;
+#restart-button img {
+  width: 45px;
+  height: 45px;
 }
 
 #restart-button:hover {
-    transform: scale(1.1);
-    cursor: pointer;
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 #game-over-screen {
-    background-image: url('./img/9_intro_outro_screens/game_over/oh\ no\ you\ lost!.png');
-    width: 100%;
-    height: 99%;
-    z-index: 100;
-    background-repeat: round ;
-    background-size: contain;
-    position: absolute;
-    /* border: solid black 5px; */
-    border-radius: 10px;
-
-   }
-
-   #restart-button-game-over {
-    position: absolute;
-    right: 47%;
-    top: 70%;
-
-   }
-
-   #restart-button-game-over img  {
-    width: 45px;
-    height: 45px;
+  background-image: url("./img/9_intro_outro_screens/game_over/oh\ no\ you\ lost!.png");
+  width: 100%;
+  height: 99%;
+  z-index: 100;
+  background-repeat: round;
+  background-size: contain;
+  position: absolute;
+  /* border: solid black 5px; */
 }
 
-#restart-button-game-over:hover   {
-    cursor: pointer;
-    transform: scale(1.1);
+#restart-button-game-over {
+  position: absolute;
+  right: 47%;
+  top: 70%;
+}
 
+#restart-button-game-over img {
+  width: 45px;
+  height: 45px;
+}
+
+#restart-button-game-over:hover {
+  cursor: pointer;
+  transform: scale(1.1);
 }
 
 #back-button {
-    position: absolute;
-    left: 2%;
-    bottom: 1%;
-    font-size: 32px;
+  position: absolute;
+  left: 2%;
+  bottom: 1%;
+  font-size: 32px;
+  z-index: 1000;
 }
 
 #back-button:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-    color: #5e1224;
+  cursor: pointer;
+  transform: scale(1.1);
+  color: #5e1224;
 }
 
 #win-screen {
-    background-image: url('./img/9_intro_outro_screens/win/win_2.png');
-    width: 100%;
-    height: 99%;
-    z-index: 100;
-    background-repeat: round ;
-    background-size: contain;
-    position: absolute;
-    /* border: solid black 5px; */
-    border-radius: 10px;
-
+  background-image: url("./img/9_intro_outro_screens/win/win_2.png");
+  width: 100%;
+  height: 99%;
+  z-index: 100;
+  background-repeat: round;
+  background-size: contain;
+  position: absolute;
 }
 
 #restart-button-win {
-    position: absolute;
-    right: 47%;
-    top: 70%;
-
-   }
-
-   #restart-button-win img  {
-    width: 45px;
-    height: 45px;
+  position: absolute;
+  right: 47%;
+  top: 70%;
 }
 
-#restart-button-win:hover   {
-    cursor: pointer;
-    transform: scale(1.1);
-
+#restart-button-win img {
+  width: 45px;
+  height: 45px;
 }
+
+#restart-button-win:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+#mobile-warning {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  z-index: 110;
+  background-color: black;
+  justify-content: center;
+  align-items: center;
+  color: yellow;
+  display: none;
+  font-size: 24px;
+}
+
+button img {
+  width: 24px;
+  height: 24px;
+}
+
+#hud button {
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  border: solid 1px black;
+  background-color: #00000024;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  display: none;
+}
+
+.arrow-filter {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(80%) saturate(1767%) hue-rotate(321deg) brightness(77%) contrast(101%);
+}
+
+#hud {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  bottom: 10px;
+}
+
+.hud-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 6px;
+}
+
+.panel {
+  display: flex;
+  gap: 18px;
+}
+
+#imprint {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 101;
+  background-image: url("./img/story_bg.jpg");
+  background-size: cover;
+  padding: 12px 6px;
+  color: white;
+  font-size: 15px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  display: flex;
+  font-weight: bold;
+}
+
+.imprint-icons {
+  display: flex;
+  flex-direction: column;
+}
+
+.imprint-icons a:link {
+  color: blue;
+}
+
+.imprint-icons a:visited {
+  text-decoration: none;
+  color: purple;
+}
+
+.imprint-icons a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.imprint-icons a {
+  text-decoration: none;
+}
+
+.d-none {
+    display: none !important;
+  }
+  

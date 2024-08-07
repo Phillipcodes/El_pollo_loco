@@ -8,8 +8,6 @@ class BottleBar extends DrawableObject{
               './img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/100.png',
 
 ];
-
-
 percentage = 100;
 
 
@@ -23,12 +21,14 @@ this.width = 170
 this.setPercentage(0);
 }
 
+
 setPercentage(percentage) {
 this.percentage = percentage
 let path = this.IMAGES[this.resolveImageIndex()];
 this.img = this.imageCache[path];
 
 }
+
 
 resolveImageIndex() {
 if(this.percentage == 100) {
@@ -46,9 +46,5 @@ return 1;
 }else   {
 return 0;
 }
-
-
 }
-
-
 }

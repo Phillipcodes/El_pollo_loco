@@ -7,6 +7,7 @@ class Level {
     world;
     level_end_x = 2200
 
+
     constructor(enemies,clouds,BackgroundObjects,coins,bottles,world) {
         this.enemies = enemies.map(enemy => {
             if (enemy instanceof Endboss) {
@@ -20,13 +21,16 @@ class Level {
         this.coins = coins
         this.bottles = bottles
     }
+
+
+    /**
+     * Removes enemies
+     * @param {enemies} enemy 
+     */
     removeEnemy(enemy) {
         setTimeout(() => {
             this.enemies = this.enemies.filter(e => e !== enemy);
         }, 3000);
         
       }
-  
-    
-    
 }

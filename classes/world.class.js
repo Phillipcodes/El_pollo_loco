@@ -2,7 +2,7 @@ class World {
   character = new Character();
   level = level1;
   lastThrowTime = 0; // Statische Variable für globalen Cooldown
-  throwCooldown = 1400;
+  throwCooldown = 1750;
   canvas; 
   ctx;
   keyboard;
@@ -13,6 +13,7 @@ class World {
   endbossBar = new EndbossBar();
   throwableObjects = [];
   background_sound = SoundManager.getSound('backgroundMusic',0.4)
+
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -26,13 +27,35 @@ class World {
     
   }
 
+
+/**
+ *  sets the chracter to the world
+ */
   setWorld() {
     this.character.world = this;
     
   }
 
+
+/**
+ * Executes necessary functions to check collisions and update the game state.
+ * This method is called at regular intervals to ensure the game correctly responds to collisions and other events.
+ *
+ * The following functions are called:
+ * - `checkEnemyCollision()`: Checks for collisions with enemies.
+ * - `checkThrowObject()`: Checks for thrown objects.
+ * - `checkBottleCollision()`: Checks for collisions with bottles.
+ * - `checkCoinCollision()`: Checks for collisions with coins.
+ * - `checkCollisionThrow()`: Checks for collisions of thrown objects.
+ * - `checkCollisionAbove()`: Checks for collisions with objects above the player.
+ * - `updateThrow()`: Updates the status of thrown objects.
+ * - `checkEndbossActivation()`: Checks if the endboss should be activated.
+ *
+ * This method is executed every 100 milliseconds.
+ *
+ * @method
+ */
  run() {
-   
     setInterval(() => {
       this.checkEnemyCollision();
       this.checkThrowObject();
@@ -45,8 +68,8 @@ class World {
       
     }, 100);
   }
-
-
+  
+ 
   checkEndbossActivation() {
     setInterval(() => {
       this.level.enemies.forEach(enemy => {
@@ -57,15 +80,16 @@ class World {
     }, 100);
   }
 
+
+  /**
+   * activate endboss movement
+   */
   activateEndboss(endboss) {
     if (Math.abs(this.character.x - endboss.x) < 450) { 
       endboss.startMoving(); 
     }
   }
 
-  checktThrowCoolDown() {
-    
-  }
 
   checkThrowObject() {
     if (this.isThrowAllowed()) {
@@ -78,18 +102,28 @@ class World {
     }
 }
 
+
+/**
+ * checks if throw is on cooldown
+ * @returns {boolean}
+ */
 isThrowAllowed() {
     const currentTime = Date.now();
     if (this.keyboard.SPACE && this.character.bottleAmount > 0) {
         if (currentTime - this.lastThrowTime < this.throwCooldown) {
             console.log('Cooldown noch nicht abgelaufen.');
-            return false; // Cooldown nicht abgelaufen
+            return false; 
         }
-        return true; // Cooldown abgelaufen, Wurf erlaubt
+        return true; 
     }
-    return false; // Entweder nicht SPACE gedrückt oder keine Flaschen mehr
+    return false; 
 }
 
+
+/**
+ *  set Throw variables like range and the offsetX
+ * @returns {Object}
+ */
 setThrowParameters() {
     let throwRange = 10;
     let xOffset = 40;
@@ -100,16 +134,26 @@ setThrowParameters() {
     return { throwRange, xOffset };
 }
 
+
+/**
+ * creates bottle with the specified params
+ * @param {number} xOffset 
+ * @param {number} throwRange 
+ * @returns {throwableObjects}
+ */
 createBottle(xOffset, throwRange) {
     return new ThrowableObject(this.character.x + xOffset, this.character.y + 100, throwRange);
 }
 
+
+/**
+ * Updates bottle Amount after throw
+ */
 updateBottleAmount() {
     this.character.bottleAmount--;
     let setBottlePercentage = (this.character.bottleAmount * 100) / this.character.bottleMax;
     this.bottlebar.setPercentage(setBottlePercentage);
 }
-
 
 
   checkEnemyCollision() {
@@ -141,14 +185,9 @@ updateBottleAmount() {
         this.character.updateCollectables()
         let setBottlePercentage = this.character.bottleAmount * 100 / this.character.bottleMax 
         this.bottlebar.setPercentage(setBottlePercentage)
-      
       }
-      
-    });
-          
+    });    
   }
-
- 
 
 
   checkCollisionAbove() {
@@ -175,8 +214,6 @@ updateBottleAmount() {
 }
 
 
-  
-
   checkCoinCollision() {
     this.level.coins.forEach(coin => {
       if(this.character.isColliding(coin)) {
@@ -191,13 +228,14 @@ updateBottleAmount() {
     
   }
 
+
   checkCollisionThrow() {
     this.throwableObjects.forEach(thr => {
       if (thr.isThrown && !thr.hasHit) { 
         let hit = false;
         this.level.enemies.forEach(enemy => {
           if (thr.isColliding(enemy)) {
-            if (!thr.hasHit) { 
+            if (!thr.hasHit && enemy instanceof Endboss) { 
               thr.hasHit = true; 
               thr.bottleHit = true
               this.updateEndbossStatusBar(thr.DMG);
@@ -215,6 +253,11 @@ updateBottleAmount() {
     });
   }
 
+
+  /**
+   * Updates Boss status bar based on his health
+   * @param {number} thr 
+   */
   updateEndbossStatusBar(thr) {
     const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
     if (endboss) {
@@ -229,6 +272,9 @@ updateBottleAmount() {
 
   
   
+  /**
+   *  draws the canvan elements
+   */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
@@ -248,6 +294,10 @@ updateBottleAmount() {
     });
   }
 
+
+  /**
+   * Draws the statusbars
+   */
   drawStatusBars() {
     this.ctx.translate(-this.camera_x, 0); //Back
     this.addToMap(this.statusbar)
@@ -256,28 +306,44 @@ updateBottleAmount() {
     if(this.isEndbossClose()) {
       this.addToMap(this.endbossBar)
     }
-   
     this.ctx.translate(this.camera_x, 0);
   }
 
+
+  /**
+   * adds objects to the canvan 
+   * @param {object[]} objects 
+   */
   addObjectsToMap(objects) {
     objects.forEach((obj) => {
       this.addToMap(obj);
     });
   }
 
+
+  /**
+ * Adds a `MovableObject` to the canvas.
+ * This method handles the drawing and flipping of the object based on its direction.
+ *
+ * @param {MovableObject} mo - The movable object to be added to the canvas. This object should have properties and methods like `draw`,  and `otherDirection`.
+ * 
+ */
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
     mo.draw(this.ctx);
-    mo.drawFrame(this.ctx);
+    // mo.drawFrame(this.ctx);
     if (mo.otherDirection) {
       this.flipImageBack(mo)
     }
   }
 
 
+  /**
+   * Flips the movable object
+   * @param {MovableObject} 
+   */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
@@ -286,12 +352,19 @@ updateBottleAmount() {
 }
 
 
+ /**
+   * Flips the movable object back
+   * @param {MovableObject} 
+   */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
 
 
+  /**
+   * initializie sound button 
+   */
   initializeSoundButton() {
     const soundButton = document.getElementById('sound-button');
    
@@ -311,19 +384,25 @@ updateThrow() {
   this.throwableObjects = this.throwableObjects.filter(obj => !obj.shouldRemove());
 }
 
+
+/**
+ * check distance to between character and boss
+ * @returns {number} - postion x from chracter
+ */
 checkEndbossDistance() {
  return this.character.x
 }
 
+
+/**
+ *  checks if boss is close to character
+ * @returns {number} - distance lower than 600
+ */
 isEndbossClose() {
   const characterX = this.character.x;
   const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
   const endbossX = endboss.x;
-  const distance = Math.abs(characterX - endbossX);
-
-  return distance < 600; // gives back true when the distance is less than 600 px
+  const distance = Math.abs(characterX - endbossX)
+  return distance < 600; 
 }
-
-
-
 }

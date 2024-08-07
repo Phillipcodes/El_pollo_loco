@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: game.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: game.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let canvas;
+let world;
+let keyboard = new Keyboard();
+let playSound = true;
+let intervalIds = [];
+let keydownHandler;
+let keyupHandler;
+win_sound = SoundManager.getSound('winSound',0.3)
+game_over_sound = SoundManager.getSound('gameOverSound',0.3)
+
+
+function init() {
+  canvas = document.getElementById('canvas');
+  setMuteSounds();
+  setOnclickEvents();
+  checkScreenSize();
+  keyboard.setUpBtnEvents();
+  SoundManager.applyMuteState();
+  
+}
+
+
+/**
+ * removes key listerners
+ */
+function removeKeyListeners() {
+  if (keydownHandler) {
+    window.removeEventListener('keydown', keydownHandler);
+  }
+  if (keyupHandler) {
+    window.removeEventListener('keyup', keyupHandler);
+  }
+}
+
+
+/**
+ * cleares the canvas 
+ */
+function clearCanvas() {
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+  }
+}
+
+
+/**
+ * sets a onclick to an element to mute sound base onclick
+ */
+function setMuteSounds() {
+  document.getElementById('mute-container').onclick = () => world?.initializeSoundButton();
+}
+
+
+
+/**
+ * destroyes the world so no objects are running in the background when starting a new world
+ */
+function destroyWorld() {
+  if (world) {
+    world = null; 
+  }
+}
+
+
+/**
+ * Initializes and starts a new game world.
+ * This function performs the following actions:
+ * - Stops any ongoing game intervals.
+ * - Removes old key event listeners.
+ * - Clears the canvas content.
+ * - Destroys the current world state.
+ * - Initializes a new game level.
+ * - Resets the keyboard state.
+ * - Creates a new instance of the `World` class with the current `canvas` and `keyboard`.
+ * - Sets up new key event listeners.
+ * - Hides the start screen by adding the 'd-none' class.
+ * - Removes the border styling from the fullscreen button.
+ *
+ */
+function setWorldStart() {
+  stopGame(); 
+  removeKeyListeners(); 
+  clearCanvas();
+  destroyWorld(); 
+  initLevel();
+  resetKeyboardState();
+  world = new World(canvas, keyboard);
+  keyboard.setupKeyListeners();
+  handleSetWorldScreens();
+}
+
+ function handleSetWorldScreens() {
+  document.getElementById('start-screen').classList.add('d-none');
+  document.getElementById('fullscreen').classList.remove('border-styling')
+  document.getElementById('button-line-up').classList.add('d-none')
+  document.getElementById('back-button').classList.remove('d-none')
+ 
+ }
+
+/**
+ * sets the world when restart
+ */
+function setRestartAfterWin() {
+  stopGame();
+  removeKeyListeners();
+  clearCanvas();
+  destroyWorld();
+  initLevel();
+  resetKeyboardState();
+  world = new World(canvas, keyboard);
+  keyboard.setupKeyListeners();
+  openWindow('win-screen');
+  SoundManager.unmuteAll();
+}
+
+
+/**
+ * sets the world when restart
+ */
+function setGameOverStart() {
+  stopGame();
+  removeKeyListeners();
+  clearCanvas();
+  destroyWorld();
+  resetKeyboardState();
+  initLevel();
+  world = new World(canvas, keyboard);
+  keyboard.setupKeyListeners();
+  SoundManager.unmuteAll();
+  document.getElementById('game-over-screen').classList.add('d-none');
+}
+
+
+/**
+ * brings the user back to the start screen
+ */
+function backToStartscreen() {
+  stopGame();
+  removeKeyListeners();
+  clearCanvas();
+  destroyWorld();
+  resetKeyboardState();
+  handleScreensForBacktoStart();
+  SoundManager.muteBackground();
+ 
+}
+
+
+function handleScreensForBacktoStart() {
+  document.getElementById('start-screen').classList.remove('d-none');
+  document.getElementById('fullscreen').classList.add('border-styling');
+  document.getElementById('button-line-up').classList.remove('d-none');
+  document.getElementById('game-over-screen').classList.add('d-none');
+  document.getElementById('back-button').classList.add('d-none');
+  document.getElementById('win-screen').classList.add('d-none');
+
+}
+
+/**
+ * Creates a stoppable interval that repeatedly executes a function at specified time intervals.
+ * The interval ID is stored so that it can be stopped later if needed.
+ *
+ * @param {Function} fn - The function to be executed repeatedly at the specified intervals.
+ * @param {number} time - The time interval (in milliseconds) between each execution of the function.
+ * @returns {void}
+ */
+function setStoppableInterval(fn, time) {
+  let id = setInterval(fn, time);
+  intervalIds.push(id);
+}
+
+
+/**
+ * stops the game and stops all intervals and clears the interval array
+ */
+function stopGame() {
+  intervalIds.forEach(clearInterval);
+  intervalIds = []; // Leere die Liste der Intervalle
+}
+
+
+/**
+ * when pepe diess set the world back to a clear one
+ */
+function pepeDead() {
+  stopGame();
+  removeKeyListeners();
+  clearCanvas();
+  destroyWorld();
+  resetKeyboardState();
+  openWindow('game-over-screen');
+  SoundManager.muteBackground();
+  game_over_sound.play();
+  
+}
+
+
+/**
+ * sum up function to start all events in once
+ */
+function setOnclickEvents() {
+  document.getElementById('play-button-start').onclick = () => setWorldStart();
+  document.getElementById('restart-button-game-over').onclick = () => setGameOverStart();
+  document.getElementById('restart-button-win').onclick = () => setRestartAfterWin();
+  document.getElementById('back-button').onclick = () => backToStartscreen();
+}
+
+
+/**
+ * creates a new world when the endboss dies 
+ */
+function endBossDead() {
+  stopGame();
+  removeKeyListeners();
+  clearCanvas();
+  destroyWorld();
+  openWindow('win-screen');
+  SoundManager.muteBackground();
+  win_sound.play();
+}
+
+
+/**
+ * resets the keyboard variables to have a fresh start when start a new world
+ */
+function resetKeyboardState() {
+  keyboard.UP = false;
+  keyboard.LEFT = false;
+  keyboard.DOWN = false;
+  keyboard.RIGHT = false;
+  keyboard.SPACE = false;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#backToStartscreen">backToStartscreen</a></li><li><a href="global.html#checkScreenSize">checkScreenSize</a></li><li><a href="global.html#clearCanvas">clearCanvas</a></li><li><a href="global.html#closeFullscreen">closeFullscreen</a></li><li><a href="global.html#destroyWorld">destroyWorld</a></li><li><a href="global.html#endBossDead">endBossDead</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hoverSound">hoverSound</a></li><li><a href="global.html#hoverSoundStop">hoverSoundStop</a></li><li><a href="global.html#openFullscreen">openFullscreen</a></li><li><a href="global.html#openWindow">openWindow</a></li><li><a href="global.html#pepeDead">pepeDead</a></li><li><a href="global.html#removeKeyListeners">removeKeyListeners</a></li><li><a href="global.html#resetKeyboardState">resetKeyboardState</a></li><li><a href="global.html#setGameOverStart">setGameOverStart</a></li><li><a href="global.html#setMuteSounds">setMuteSounds</a></li><li><a href="global.html#setOnclickEvents">setOnclickEvents</a></li><li><a href="global.html#setRestartAfterWin">setRestartAfterWin</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setWorldStart">setWorldStart</a></li><li><a href="global.html#showCapsLockWarning">showCapsLockWarning</a></li><li><a href="global.html#stopGame">stopGame</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Aug 07 2024 18:12:33 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

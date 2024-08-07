@@ -64,7 +64,6 @@ class Character extends MovableObject {
   speed = 4;
   coinAmount = 0;
     coinMax = 0;
-
   bottleAmount = 0;
   bottleMax = 0;
   hasBounced = false;
@@ -89,27 +88,39 @@ class Character extends MovableObject {
     
   }
 
+
+  /**
+   * sets the Max amount of colectables
+   * @param {number} coinMax 
+   * @param {number} bottleMax 
+   */
   setMax(coinMax,bottleMax) {
     this.coinMax = coinMax;
     this.bottleMax = bottleMax;
     
 }
 
+
+/**
+ *  updates collectables amount
+ * @param {number} amount 
+ */
 updateCollectables(amount) {
   if(amount === 'coinAmount') {
   this.coinAmount++
- 
   }else {
     this.bottleAmount++
-    
   }
   if(this.bottleAmount == this.bottleMax) {
     this.full_sound.play();
   }
   this.collect_sound.play();
- 
 }
 
+
+/**
+ * let the player bounce when colliding with an enmies from above
+ */
 bounce() {
   if (!this.hasBounced) {
     this.speedY = 10; // Passt den Wert an, um die Intensität des Bounces zu steuern
@@ -118,8 +129,12 @@ bounce() {
 }
 }
 
+
+/**
+ * resets the bounce status
+ */
 resetBounce() {
-  this.hasBounced = false; // Setze die Flagge zurück, wenn der Charakter den Boden erreicht oder sich bewegt
+  this.hasBounced = false; 
 }
 
 
@@ -135,6 +150,10 @@ resetBounce() {
     }, 120); 
   }
 
+
+  /**
+   * sets the idle Animation
+   */
   idleAnimation() {
     if (this.isSleeping) {
       this.playAnimation(this.IMAGES_SLEEPING);
@@ -143,6 +162,10 @@ resetBounce() {
     }
   }
 
+
+  /**
+   * sets the Movement animation for the player
+   */
   characterMovementanimation() {
     if (this.isDead()) {
       if (!this.isDeadFlag) {
@@ -152,54 +175,81 @@ resetBounce() {
       }
     } else if (this.isHurt()) {
       this.playAnimation(this.IMAGES_HURT);
-      this.hurt_sound.play();
-  
+      this.hurt_sound.play()
     } else if (this.isAboveGround()) {
      this.handleJumpAnimation()
     } else {
       if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
         this.playAnimation(this.IMAGES_WALKING);
-      }
-    }
-  }
+      }}};
+ 
 
+/**
+ * interface for chracter movements 
+ */
   handleCharacter() {
     this.handleMovement();
     this.handleIdleSound(); // Call the new function for handling the idle sound
     this.world.camera_x = -this.x + 80;
   }
 
+
+  /**
+   * handle movement based on input
+   */
   handleMovement() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-      this.otherDirection = false;
-      this.moveRight(); 
-      this.detectMovement();
+      this.characterMovementRight();
     }
     if (this.world.keyboard.LEFT && this.x > 0) {
-      this.otherDirection = true;
-      this.moveleft(); 
-      this.detectMovement();
+      this.characterMovementLeft();
     }
     if (this.world.keyboard.UP && !this.isAboveGround()) {
-        this.jump(this.speedY= 11);
-        
-        this.jump_sound.play();
-        this.detectMovement();
+       this.characterMovementJump();
       }
-      
-
-    // Check if character is moving and play walkkking sound
     if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) {
       if (this.walking_sound.paused) {
-        this.walking_sound.currentTime = 0; // Reset sound to start
+        this.walking_sound.currentTime = 0;
         this.walking_sound.play();
       }
     } else {
       this.walking_sound.pause();
-    }
-   
+    }}
+ 
+
+    /**
+     * sets behaviour for movment to the right
+     */
+  characterMovementRight() {
+    this.otherDirection = false;
+      this.moveRight(); 
+      this.detectMovement();
   }
 
+
+   /**
+     * sets behaviour for movment to the left
+     */
+  characterMovementLeft() {
+    this.otherDirection = true;
+    this.moveleft(); 
+    this.detectMovement();
+  }
+
+
+   /**
+     * sets behaviour for movment for the Jump
+     */
+  characterMovementJump() {
+    this.jump(this.speedY= 11);
+    this.jump_sound.play();
+    this.detectMovement();
+  }
+
+
+  /**
+   * handles the sound when to play the sleep or idle sound
+   */
   handleIdleSound() {
     if (this.isSleeping) {
       if (this.idle_sound.paused) {
@@ -211,36 +261,44 @@ resetBounce() {
     }
   }
 
+
+  /**
+   * resets the movement timeout for the idle animation when moved
+   */
   resetMovementTimeout() {
-    // Clear the previous timeouts if they exist
     if (this.movementTimeout) {
       clearTimeout(this.movementTimeout);
     }
     if (this.idleTimeout) {
       clearTimeout(this.idleTimeout);
     }
-    // Set a new timeout to set isSleeping to true after 10 seconds
     this.movementTimeout = setTimeout(() => {
       if(!this.isDead()){
-      this.isSleeping = true; // Set sleeping state after inactivity
+      this.isSleeping = true;
       this.playAnimation(this.IMAGES_SLEEPING);
     }
     }, this.sleepDuration);
-
-    // Set a new timeout to set isIdle to true after 1 second
     this.idleTimeout = setTimeout(() => {
       if (!this.isSleeping && !this.isDead()) {
-        this.isIdle = true; // Set idle state after 1 second of inactivity
-        this.playAnimation(this.IMAGES_IDLE); // Optional: Use idle images if different
+        this.isIdle = true; 
+        this.playAnimation(this.IMAGES_IDLE);
       }
     }, this.idleDuration);
   }
 
+
+/**
+ * detects Movement and sets the idle variable to false
+ */
   detectMovement() {
-    this.isIdle = false; // Reset idle state
-    this.resetMovementTimeout(); // Reset movement timeout
+    this.isIdle = false; 
+    this.resetMovementTimeout(); 
   }
 
+
+  /**
+   * handles the Jump animation and gives the right image out
+   */
 handleJumpAnimation() {
   let i = 0
   if(i < this.IMAGES_JUMPING.length) {
@@ -249,7 +307,7 @@ handleJumpAnimation() {
   }else {
     this.setMovementAnimation();
   }
-  if(!this.isAboveGround()) {  // vllt eine attackk erstellen wo er kurz stehen bleibt und seine attack animation bekkommt und dann 3 sekkunden lang schnell rennt 
+  if(!this.isAboveGround()) {  
     i = 0 
     this.firstContact= true
   }

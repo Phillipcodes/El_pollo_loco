@@ -3,7 +3,7 @@ class ThrowableObject extends MovableObject {
     sounds = [SoundManager.getSound('throw')];
     isThrown = false
     bottleHit = false 
-    removeAfter = 0.15; // Zeit in Sekunden nach Kollision oder Bodenkontakt
+    removeAfter = 0.15;
     touchdownTime = null;
     IMAGES_SPIN = ['./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png','./img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png','./img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png','./img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',];
     IMAMGES_SPLASH = ['./img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
@@ -13,10 +13,9 @@ class ThrowableObject extends MovableObject {
                        './img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
                        './img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ];
-    DMG = 100
-    lastThrowTime = 0; // Zeitstempel des letzten Wurfs
-    throwCooldown = 2000; // Cooldown in Millisekunden (2 Sekunden)
+    DMG = 25
     throwInterval = null;
+
 
     constructor(x,y,range) {
         super().loadImage('./img/6_salsa_bottle/salsa_bottle.png')
@@ -27,10 +26,13 @@ class ThrowableObject extends MovableObject {
         range = range
         this.height = 70
         this.width = 70
-       
     }
 
-    animateThrow () {
+
+/**
+ * Animates the throw
+ */
+    animateThrow() {
       this.throwAnimation =   setInterval(() => {
             this.playAnimation(this.IMAMGES_SPLASH)
             if(this.currentImage >= this.IMAMGES_SPLASH.length) {
@@ -40,22 +42,21 @@ class ThrowableObject extends MovableObject {
         
     }
 
+
+    /**
+     * starts the throw  and checks in which state the current throw is 
+     * @param {number} range - how far the throw flys
+     */
     throw(range) {
-
-      
-
         this.setThrowStart();
-        // Wurf-Intervall für horizontale Bewegung
         this.throwInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_SPIN);
           this.x += range;
-          // Überprüfe, ob die Flasche den Boden erreicht hat
           if (this.y >= 350) {
-            this.y = 350; // Stelle sicher, dass y nicht unter den Boden sinkt
+            this.y = 350; 
             clearInterval(this.throwInterval);
             this.animateThrow();
-            this.handleTouchdown()
-             // Stoppe das Intervall für die horizontale Bewegung
+            this.handleTouchdown();
           }
           if(this.bottleHit == true) {
             this.removeAfter = 0.004
@@ -66,22 +67,32 @@ class ThrowableObject extends MovableObject {
       }
 
 
-
-
-
+      /**
+       * sets the conditions for the throw
+       */
       setThrowStart() {
-        this.throw_sound.play()
+        this.throw_sound.play();
         this.isThrown = true;
-        this.speedY = 12; // Anfangsgeschwindigkeit
+        this.speedY = 12; 
         this.applyGravity();
       }
 
+
+      /**
+       * check time between colision or ground contact
+       */
       handleTouchdown() {
-        // Handler für Bodenkontakt oder Kollision
         this.touchdownTime = new Date().getTime();
         this.isThrown = false;
       }
     
+
+     /**
+      *Determines if an object should be removed based on the elapsed time since touchdown.
+      * The object is removed if the time since `touchdownTime` exceeds `removeAfter`.
+      *
+      * @returns {boolean} `true` if the object should be removed, `false` otherwise.
+      */
       shouldRemove() {
         if (this.touchdownTime) {
           let currentTime = new Date().getTime();
@@ -90,7 +101,4 @@ class ThrowableObject extends MovableObject {
         }
         return false;
       }
-
-    
-    
 }

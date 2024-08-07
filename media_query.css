@@ -1,0 +1,91 @@
+@media only screen and (width <= 720px) {
+    canvas {
+      width: 100%;
+      border: none;
+    }
+  
+    h1 {
+      display: none;
+    }
+  
+    .button-line {
+        position: absolute;
+        z-index: 101;
+        bottom: -2%;
+        left: 23%;
+        justify-content: start;
+        display: flex;
+    }
+  
+    .stroy-panel {
+      border: none;
+    }
+  
+    .controls-information {
+      border: none;
+    }
+  
+    #start-screen {
+      border: none;
+    }
+  
+    #game-over-screen {
+      border: none;
+    }
+  
+    #hud button {
+      display: flex;
+    }
+  }
+  
+  @media only screen and (height <= 480px) {
+    canvas {
+      height: 100vh;
+      border: none;
+    }
+    #mobile-warning {
+      display: block;
+    }
+  
+    h1 {
+      display: none;
+    }
+  
+    .button-line {
+        position: absolute;
+        z-index: 101;
+        bottom: -2%;
+        left: 23%;
+        justify-content: start;
+        display: flex;
+    }
+  
+    .stroy-panel {
+      border: none;
+    }
+  
+    .controls-information {
+      border: none;
+    }
+  
+    #start-screen {
+      border: none;
+    }
+  
+    #game-over-screen {
+      border: none;
+    }
+  
+    #back-button {
+      left: 44%;
+      font-size: 24px;
+    }
+  
+    #fullscreen-button {
+      display: none;
+    }
+  
+    #hud button {
+      display: flex;
+    }
+  }

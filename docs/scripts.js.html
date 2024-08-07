@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: scripts.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: scripts.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>    let thisSound = new Audio('../audio/hover_sound.mp3 ')
+    let currentOpenWindow = null
+    let warningDiv;
+   let CapslockOn = false
+   let fullscreenOn = false
+
+
+   /**
+    * starts hover sound when hovering over the element
+    */
+   async function hoverSound() {
+    try {
+        await thisSound.play();
+    } catch (error) {
+    
+    }
+}
+
+
+/**
+ * stops the hoversound when moved away form the element
+ */
+function hoverSoundStop() {
+    thisSound.pause();
+    thisSound.currentTime = 0;
+}
+
+
+/**
+ * toggle container based on their id 
+ * @param {string} id 
+ */
+function openWindow(id) {
+ let window = document.getElementById(id);
+ if(currentOpenWindow &amp;&amp; currentOpenWindow !== window) {
+    currentOpenWindow.classList.add('d-none');
+ }
+ window.classList.toggle('d-none');
+ currentOpenWindow = window.classList.contains('d-none') ? null : window
+}
+
+    /**
+     * evenlistener for validating the capslock event
+     */
+    window.addEventListener('keyup', (event) => {
+        if (event.getModifierState('CapsLock')) {
+            CapslockOn = true
+        } else {
+            CapslockOn = false
+        }
+        showCapsLockWarning();
+    });
+
+
+    /**
+     * shows a warining when capslock is activated
+     */
+    function showCapsLockWarning() {
+        const body = document.body;
+        const fullscreen = body.querySelector('#fullscreen'); 
+        let warningDiv = body.querySelector('#capsLockWarning');
+        if (CapslockOn) {
+            if (!warningDiv) {
+                warningDiv = document.createElement('div');
+                warningDiv.id = 'capsLockWarning'; 
+                warningDiv.textContent = 'Caps Lock is activated!';
+                if (fullscreen) {
+                    body.insertBefore(warningDiv, fullscreen);
+                }
+            }
+        } else {
+            if (warningDiv) {
+                warningDiv.remove();
+            }
+        }
+    }
+
+
+    /**
+     * sets the browser to fullscreen
+     */
+   function fullscreen () {
+    if (!fullscreenOn) {
+        openFullscreen()
+        fullscreenOn = true
+    } if(fullscreenOn) {
+        closeFullscreen()
+        fullscreenOn = false
+    }
+   }
+
+
+    /**
+     * opens fullscreen
+     */
+  function openFullscreen() {
+    let elem = document.getElementById('fullscreen');
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+    }
+}
+
+
+/**
+ * closes fullscreen
+ */
+function closeFullscreen() {
+    if (document.fullscreenElement) { // Überprüfe, ob das Dokument im Vollbildmodus ist
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+    }
+}
+
+
+/**
+ *  checks screenSize to display a message to rotate the mobile phone on specifc monitor size
+ */
+function checkScreenSize() {
+    const container = document.getElementById('mobile-warning');
+    const displayNoneCanvas = document.getElementById('fullscreen');
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const maxWidth = 720;
+    const minHeight = 480; 
+    if (width &lt;= maxWidth &amp;&amp; height >= minHeight) {
+      container.style.display = 'flex';
+      displayNoneCanvas.style.display ='none'
+    } else {
+      container.style.display = 'none';
+      displayNoneCanvas.style.display =''
+      window.addEventListener('resize', checkScreenSize);
+    }
+  }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#backToStartscreen">backToStartscreen</a></li><li><a href="global.html#checkScreenSize">checkScreenSize</a></li><li><a href="global.html#clearCanvas">clearCanvas</a></li><li><a href="global.html#closeFullscreen">closeFullscreen</a></li><li><a href="global.html#destroyWorld">destroyWorld</a></li><li><a href="global.html#endBossDead">endBossDead</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hoverSound">hoverSound</a></li><li><a href="global.html#hoverSoundStop">hoverSoundStop</a></li><li><a href="global.html#openFullscreen">openFullscreen</a></li><li><a href="global.html#openWindow">openWindow</a></li><li><a href="global.html#pepeDead">pepeDead</a></li><li><a href="global.html#removeKeyListeners">removeKeyListeners</a></li><li><a href="global.html#resetKeyboardState">resetKeyboardState</a></li><li><a href="global.html#setGameOverStart">setGameOverStart</a></li><li><a href="global.html#setMuteSounds">setMuteSounds</a></li><li><a href="global.html#setOnclickEvents">setOnclickEvents</a></li><li><a href="global.html#setRestartAfterWin">setRestartAfterWin</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setWorldStart">setWorldStart</a></li><li><a href="global.html#showCapsLockWarning">showCapsLockWarning</a></li><li><a href="global.html#stopGame">stopGame</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Aug 07 2024 18:12:33 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

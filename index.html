@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./media_query.css">
     <link rel="stylesheet" href="./fonts.css">
     <script src="./js/scripts.js"></script>
     <script src="./classes/sound_manager.class.js"></script>
@@ -27,13 +28,51 @@
     <script src="./classes/throwable_object.class.js"></script>
     <script src="./classes/level.class.js"></script>
     <script src="./levels/level1.js"></script>
-   
-    <title>El pollo loco</title>
+    <link rel="icon" type="image/x-icon" href="img/6_salsa_bottle/salsa_bottle.png">
+    <title>El POLLO LOCO</title>
 </head>
 <body onload="init()">
+    <div id="mobile-warning">
+        <span>Please rotate your phone</span>
+    </div>
     <h1>(El pollo loco)</h1>
-    <div id="fullscreen">
+    <div id="fullscreen" class="border-styling">
     <div id="overlay" class="overlay">
+        <div id="imprint" class="d-none">
+            <div class="imprint-text">
+            <h1>Impressum</h1>
+                <p>Phillip-Marcel Sauer<br />
+                Zur Bormig 9a<br />
+                51764 Wiehl</p>
+                <h2>Kontakt</h2>
+                <p>Telefon: 0211231695<br />
+                E-Mail: phillipsauer00@gmail.com</p>
+                <p>Quelle: <a href="https://www.e-recht24.de/impressum-generator.html">https://www.e-recht24.de/impressum-
+                generator.html</a></p>
+            </div>
+                <div class="imprint-icons"><span>Icons provided by</span>
+                    <a href="https://www.flaticon.com/free-icons/mute" title="mute icons">Mute icons created by HideMaru - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/sound" title="sound icons">Sound icons created by Bharat Icons - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/keyboard-command" title="keyboard command icons">Keyboard command icons created by shohanur.rahman13 - Flaticon</a>
+                    <a href="https://www.flaticon.com/free-icons/cactus" title="cactus icons">Cactus icons created by Freepik - Flaticon</a>
+                    <a href="https://www.flaticon.com/de/kostenlose-icons/vollbildschirm" title="vollbildschirm Icons">Vollbildschirm Icons erstellt von Tadu Puasandi - Flaticon</a>
+                    <a href="https://www.flaticon.com/de/kostenlose-icons/wiedergabetaste" title="wiedergabetaste Icons">Wiedergabetaste Icons erstellt von sonnycandra - Flaticon</a>
+                    <a href="https://www.flaticon.com/de/kostenlose-icons/neu-starten" title="neu starten Icons">Neu starten Icons erstellt von Nuricon - Flaticon</a>
+                    <a href="https://www.flaticon.com/de/kostenlose-icons/pfeil-nach-unten" title="pfeil nach unten Icons">Pfeil nach unten Icons erstellt von Lyolya - Flaticon</a>
+            </div></div>
+                
+        <div id="hud">
+            <div class="hud-wrapper">
+                <div class="panel" > 
+                    <div> <button id="btn-left"> <img class="arrow-filter" src="./img/left-arrow.png" alt=""></button></div>
+                    <div> <button id="btn-up"> <img class="arrow-filter" src="./img/up-arrow.png" alt=""> </button></div>
+                </div>
+                <div class="panel" >
+                    <div><button id="btn-right"><img class="arrow-filter"src="./img/right-arrow.png" alt=""></button></div>
+                    <div> <button id="btn-space"> <img src="./img/7_statusbars/3_icons/icon_salsa_bottle.png" alt=""></button></div>
+                </div>
+            </div>
+        </div>
         <div id="start-screen">
             <div id="play-button">
                 <img id="play-button-start" onmouseover="hoverSound()" onmouseout="hoverSoundStop()" src="./img/play.png" alt="">
@@ -51,16 +90,7 @@
             </div>
         </div>
     <div id="story-screen" class="stroy-panel d-none ">
-        <p>In Mexico, the fearless hero Pepe set out to defeat the dreaded villain, El Pollo Diablo, the Evil Mexican Chicken. Known for its fiery red feathers and glowing eyes, El Pollo Diablo commanded an army of fierce henchmen who terrorized villages.
-
-            Pepe's quest began at dawn, facing ambushes from the malevolent chickens. Armed with nothing but his courage and a collection of legendary hot sauces—Salsa de Fuego, Salsa del Diablo, and Salsa de la Muerte—he knew these were the key to vanquishing his foe.
-            
-            As he traveled through the desert, Pepe gathered hot sauces from villages, each with unique powers. Finally, he reached El Pollo Diablo’s fortress, guarded by an army of fierce creatures. With a burst of sizzling hot sauce, Pepe unleashed his fiery arsenal, causing chaos among the henchmen.
-            
-            El Pollo Diablo emerged, but Pepe was ready. Using the last of his hot sauce, Salsa de la Muerte, he struck a decisive blow. The heat proved too much for the evil chicken. With a final, desperate squawk, El Pollo Diablo fell, ending his reign of terror.
-            
-            Exhausted but triumphant, Pepe returned to his village as a hero. His bravery and the fiery hot sauces saved Mexico, proving that even the hottest of chickens could be defeated with courage and spice.</p>
-           
+            <p>Pepe, a brave Mexican hero, sets out on a daring adventure to stop the notorious Chicken Boss, El Pollo Malvado. Armed with his trusty hot sauce, Pepe is determined to defeat the villain and save his town. With fiery courage and the power of his spicy concoction, Pepe faces numerous challenges on his journey, aiming to bring justice and peace to his land. Can Pepe and his hot sauce put an end to El Pollo Malvado's reign of terror?</p>
             </div>
     <div id="control-screen" class="controls-information d-none">
         <div class="control-content">
@@ -88,9 +118,7 @@
         <div id="fullscreen-button" onclick="fullscreen()" >
             <img src="./img/fullscreen.png" alt="fullscreen">
         </div>
-        <div id="restart-button">
-            <img src="./img/restart.png" alt="">
-        </div>
+       
         <div id="back-button">
             <span>MENU</span>
         </div>
@@ -99,9 +127,10 @@
 
     </canvas>
 </div>
-    <div class="button-line">
+    <div id="button-line-up" class="button-line">
         <div onmouseover="hoverSound()" onmouseout="hoverSoundStop()" onclick="openWindow('control-screen')"> <h2>Controls</h2></div>
         <div onmouseover="hoverSound()" onmouseout="hoverSoundStop()" onclick="openWindow('story-screen')"> <h2>Story</h2>  </div>
+        <div onmouseover="hoverSound()" onmouseout="hoverSoundStop()" onclick="openWindow('imprint')"> <h2>Imprint</h2>  </div>
     </div>
    
 

@@ -7,9 +7,6 @@ class EndbossBar extends DrawableObject {
         './img/7_statusbars/2_statusbar_endboss/blue/blue80.png',
         './img/7_statusbars/2_statusbar_endboss/blue/blue100.png',
 ];
-
-
-
     percentage = 100;
 
 
@@ -23,6 +20,11 @@ class EndbossBar extends DrawableObject {
         this.setPercentage(100);
     }
 
+
+    /**
+     *  set the % of hp
+     * @param {number} 
+     */
     setPercentage(percentage) {
         this.percentage = percentage
         let path = this.IMAGES_HP[this.resolveImageIndex()];
@@ -30,6 +32,11 @@ class EndbossBar extends DrawableObject {
    
     }
 
+
+    /**
+     *  gives back the right img based on percentage
+     * @returns  {number}
+     */
     resolveImageIndex() {
         if(this.percentage == 100) {
             return 5;
@@ -46,8 +53,5 @@ class EndbossBar extends DrawableObject {
         }else   {
             return 0;
         }
-        
-
     }
-
 }

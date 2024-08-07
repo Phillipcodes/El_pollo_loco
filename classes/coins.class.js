@@ -4,13 +4,13 @@ class Coin extends DrawableObject {
     img;
     height = 160;
     width = 130;
-
     offset = {
         top: 50, //offset x iist links y top  width is right height is bottom
         bottom: 50,
         left: 37,
         right: 37,
       };
+
 
     constructor(group,index) { 
         super().loadImage('./img/8_coin/coin_1.png');
@@ -21,6 +21,7 @@ class Coin extends DrawableObject {
         
      }
 
+     
      animate() {
       setStoppableInterval(() => {
         this.playAnimation(this.IMAGES_COIN)
