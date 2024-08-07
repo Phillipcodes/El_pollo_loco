@@ -143,6 +143,7 @@ function backToStartscreen() {
   resetKeyboardState();
   handleScreensForBacktoStart();
   SoundManager.muteBackground();
+  SoundManager.muteWinSound();
  
 }
 
@@ -190,7 +191,7 @@ function pepeDead() {
   destroyWorld();
   resetKeyboardState();
   openWindow('game-over-screen');
-  SoundManager.muteBackground();
+  SoundManager.muteAll();
   game_over_sound.play();
   
 }
