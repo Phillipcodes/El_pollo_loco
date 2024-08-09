@@ -62,10 +62,12 @@
   
     .stroy-panel {
       border: none;
+      font-size: 16px;
     }
   
     .controls-information {
       border: none;
+      font-size: 16px;
     }
   
     #start-screen {
@@ -88,4 +90,21 @@
     #hud button {
       display: flex;
     }
+    
   }
+  @media only screen and (width <= 1367px) { 
+
+    #hud button {
+      display: flex;
+    }
+    #back-button {
+      left: 45%;
+      font-size: 24px;
+    }
+  
+    #fullscreen-button {
+      display: none;
+    }
+  }
+
+

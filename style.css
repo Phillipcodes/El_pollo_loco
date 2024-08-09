@@ -11,6 +11,7 @@ body {
   /* background-position: center bottom; */
   background-size: cover;
   cursor: default;
+  overflow: hidden;
 }
 
 h1 {
@@ -160,7 +161,7 @@ canvas {
   width: 100%;
 }
 
-.stroy-panel {
+.story-panel {
   background-image: url("./img/story_bg.jpg");
   background-size: cover;
   width: 100%;
@@ -172,12 +173,12 @@ canvas {
   font-size: 22px;
   word-break: break-all;
   display: flex;
-  align-items: center;
+  filter: brightness(1.1) contrast(1.1)
 }
 
-.stroy-panel p {
+.story-panel p {
   padding: 12px 24px;
-  color: orangered;
+  color: red;
 }
 
 #capsLockWarning {
@@ -384,10 +385,11 @@ button img {
   position: absolute;
   z-index: 101;
   background-image: url("./img/story_bg.jpg");
-  background-size: cover;
+  /* background-size: cover; */
+  background-position: center;
   padding: 12px 6px;
   color: white;
-  font-size: 15px;
+  font-size: 13px;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   display: flex;
   font-weight: bold;

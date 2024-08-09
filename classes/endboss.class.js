@@ -1,3 +1,6 @@
+/**
+ * @class
+ */
 class Endboss extends MovableObject {
     y = 60
     height = 375;
@@ -36,7 +39,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD)
     this.loadImages(this.IMAGES_ALERT)
     this.x =  2200
-    this.speed = 0.9 + Math.random() * 0.5
+    this.speed = 1.05 + Math.random() * 0.5
     this.animate();
     }
    
@@ -50,7 +53,7 @@ class Endboss extends MovableObject {
       this.setMovement()
     }, 1000/60);
     setStoppableInterval(() => {
-     if(i < this.IMAGES_ALERT.length) {
+     if(i < this.IMAGES_ALERT.length || !this.isMoving) {
         this.playAnimation(this.IMAGES_ALERT)
         i++
       }else {
@@ -60,6 +63,7 @@ class Endboss extends MovableObject {
         i = 0 
         this.firstContact= true
       }
+     
     }, 180);
     setStoppableInterval(() => {
       this.handlePain();
@@ -70,20 +74,7 @@ class Endboss extends MovableObject {
   }
 
   
-  /**
-   * handles the alert animation of the boss
-   */
-  handleAlert() {
-    let i = 0
-    if(i >= this.IMAGES_ALERT.length) {
-    this.playAnimation(this.IMAGES_ALERT)
-     i++
-  }
-    if(world.character.x > 1600) {
-    i = 0
-    this.firstContact = true
-  }
-  };
+
   
 
   /**
@@ -118,10 +109,18 @@ class Endboss extends MovableObject {
    * sets the movements possibilities for the boss
    */
   setMovement() {
-    if (this.isMoving) {
+    if (this.isMoving && world.character.x < this.x || this.isHurt()) {
       if (!this.isDeadFlag) {
+        this.isMoving = true
+        this.otherDirection = false;
       this.moveleft(); 
       }
+    }
+    if(world.character.x -100  >= this.x && !this.isDeadFlag) {
+      this.otherDirection = true;
+      this.moveRight()
+
+      
     }
   }
 

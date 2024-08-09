@@ -1,4 +1,4 @@
-    let thisSound = new Audio('../audio/hover_sound.mp3 ')
+    // let thisSound = new Audio('./audio/hover_sound.mp3')
     let currentOpenWindow = null
     let warningDiv;
    let CapslockOn = false
@@ -10,21 +10,23 @@
     */
    async function hoverSound() {
     try {
-        await thisSound.play();
+      const hoverSound = SoundManager.sounds["hoverSound"];
+      if (hoverSound) {
+        await hoverSound.play();
+      }
     } catch (error) {
-    
+      
     }
-}
-
-
-/**
- * stops the hoversound when moved away form the element
- */
-function hoverSoundStop() {
-    thisSound.pause();
-    thisSound.currentTime = 0;
-}
-
+  }
+  
+ 
+  function hoverSoundStop() {
+    const hoverSound = SoundManager.sounds["hoverSound"];
+    if (hoverSound) {
+      hoverSound.pause();
+      hoverSound.currentTime = 0;
+    }
+  }
 
 /**
  * toggle container based on their id 
@@ -71,9 +73,7 @@ function openWindow(id) {
         } else {
             if (warningDiv) {
                 warningDiv.remove();
-            }
-        }
-    }
+            }}}
 
 
     /**

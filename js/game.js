@@ -15,7 +15,7 @@ function init() {
   setOnclickEvents();
   checkScreenSize();
   keyboard.setUpBtnEvents();
-  SoundManager.applyMuteState();
+  
   
 }
 
@@ -80,14 +80,17 @@ function destroyWorld() {
  */
 function setWorldStart() {
   stopGame(); 
+  muteAllSounds();
   removeKeyListeners(); 
   clearCanvas();
   destroyWorld(); 
-  initLevel();
   resetKeyboardState();
+  initLevel();
   world = new World(canvas, keyboard);
+  SoundManager.checkAndToggleSound()
   keyboard.setupKeyListeners();
   handleSetWorldScreens();
+  
 }
 
  function handleSetWorldScreens() {
@@ -103,15 +106,19 @@ function setWorldStart() {
  */
 function setRestartAfterWin() {
   stopGame();
+  muteAllSounds();
   removeKeyListeners();
   clearCanvas();
   destroyWorld();
-  initLevel();
   resetKeyboardState();
+  initLevel();
   world = new World(canvas, keyboard);
   keyboard.setupKeyListeners();
   openWindow('win-screen');
-  SoundManager.unmuteAll();
+  SoundManager.checkAndToggleSound()
+
+  
+ 
 }
 
 
@@ -120,6 +127,7 @@ function setRestartAfterWin() {
  */
 function setGameOverStart() {
   stopGame();
+  muteAllSounds();
   removeKeyListeners();
   clearCanvas();
   destroyWorld();
@@ -127,9 +135,11 @@ function setGameOverStart() {
   initLevel();
   world = new World(canvas, keyboard);
   keyboard.setupKeyListeners();
-  SoundManager.unmuteAll();
   document.getElementById('game-over-screen').classList.add('d-none');
+  SoundManager.checkAndToggleSound()
+  
 }
+
 
 
 /**
@@ -137,13 +147,13 @@ function setGameOverStart() {
  */
 function backToStartscreen() {
   stopGame();
+  muteAllSounds();
   removeKeyListeners();
   clearCanvas();
   destroyWorld();
   resetKeyboardState();
   handleScreensForBacktoStart();
-  SoundManager.muteBackground();
-  SoundManager.muteWinSound();
+
  
 }
 
@@ -178,6 +188,11 @@ function setStoppableInterval(fn, time) {
 function stopGame() {
   intervalIds.forEach(clearInterval);
   intervalIds = []; // Leere die Liste der Intervalle
+  
+}
+
+ function muteAllSounds() {
+  SoundManager.muteAllStopGame();
 }
 
 
@@ -191,8 +206,8 @@ function pepeDead() {
   destroyWorld();
   resetKeyboardState();
   openWindow('game-over-screen');
-  SoundManager.muteAll();
   game_over_sound.play();
+  
   
 }
 
@@ -217,7 +232,7 @@ function endBossDead() {
   clearCanvas();
   destroyWorld();
   openWindow('win-screen');
-  SoundManager.muteBackground();
+  SoundManager.checkAndToggleSound()
   win_sound.play();
 }
 

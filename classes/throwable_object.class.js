@@ -1,3 +1,6 @@
+/**
+ * @class
+ */
 class ThrowableObject extends MovableObject {
     throw_sound = SoundManager.getSound('throw')
     sounds = [SoundManager.getSound('throw')];

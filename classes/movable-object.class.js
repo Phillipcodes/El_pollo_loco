@@ -1,12 +1,15 @@
-class MovableObject extends DrawableObject{
+/**
+ * @class
+ */
+class MovableObject extends DrawableObject {
   speed = 0.12;
   otherDirection = false;
-  idleTimeout = null; 
-  movementTimeout = null; 
+  idleTimeout = null;
+  movementTimeout = null;
   isSleeping = false;
   isIdle = false;
-  idleDuration = 350; 
-  sleepDuration = 10000; 
+  idleDuration = 350;
+  sleepDuration = 10000;
   speedY = 0;
   speedX = 0;
   acceleration = 0.6;
@@ -22,14 +25,12 @@ class MovableObject extends DrawableObject{
 
 
   /**
-   * sets death and the right image 
+   * sets death and the right image
    */
   die() {
     this.isDead = true;
-    this.speed = 0; 
+    this.speed = 0;
     this.loadImage(this.IMAGES_DEAD[0]);
-   
-    
   }
 
 
@@ -39,27 +40,33 @@ class MovableObject extends DrawableObject{
    * @param {*} fromAbove - controlls if dmg comve form above
    */
   hit(damage, fromAbove = false) {
-    if (!fromAbove) { 
+    if (this.isHurt()) {
+      
+      return;
+    }
+    if (!fromAbove ) {
       this.health -= damage;
       if (this.health < 0) {
         this.health = 0;
+
+        
       } else {
-        this.lastHit = new Date().getTime(); 
+        this.lastHit = new Date().getTime();
       }
     }
   }
 
 
   /**
-  * Checks if the object is currently in a "hurt" state based on the time since the last hit.
-  * The object is considered "hurt" if less than 0.5 seconds have passed since the last hit.
-  *
-  * @returns {boolean} `true` if the object is still in the "hurt" state (i.e., less than 0.5 seconds have passed since the last hit), `false` otherwise.
-  */
+   * Checks if the object is currently in a "hurt" state based on the time since the last hit.
+   * The object is considered "hurt" if less than 0.5 seconds have passed since the last hit.
+   *
+   * @returns {boolean} `true` if the object is still in the "hurt" state (i.e., less than 0.5 seconds have passed since the last hit), `false` otherwise.
+   */
   isHurt() {
-    let timepassed  = new Date().getTime() - this.lastHit 
-    timepassed =timepassed / 1000 
-    return timepassed < 0.5;
+    let timepassed = new Date().getTime() - this.lastHit;
+    timepassed = timepassed / 1000;
+    return timepassed < 0.7;
   }
 
 
@@ -68,57 +75,76 @@ class MovableObject extends DrawableObject{
    * @returns {number}
    */
   isDead() {
-    return this.health == 0;    
+    return this.health == 0;
   }
 
 
-/**
- * sets a gravity logic to the world
- */
+  /**
+   * sets a gravity logic to the world
+   */
   applyGravity() {
     setStoppableInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
-          this.y -= this.speedY;
-          this.speedY -= this.acceleration;
-          this.inAir = false
-        if(this.hasBounced == true) {
-          this.resetBounce()
-        }
-          if (this.y >= 350 &&  this.isAboveGround()) {
-            this.y = 350; 
-            this.speedY = 0; 
-            this.inAir = false
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+        this.inAir = false;
+
+        if (this.y > 380 && this.isAboveGround()) {
+          this.y = 380;
+          this.speedY = 0;
+          this.inAir = false;
         }
       }
-  }, 1000 / 60);
-}
+    }, 1000 / 60);
+  }
 
 
-/**
- * checks if a movable object above ground
- * @returns {number}
- */
+  applyGravityCharacterJump() {
+    setStoppableInterval(() => {
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+        if (this.y > 185) {
+          this.y = 185;
+          this.speedY = 0;
+          this.inAir = false;
+          if (this.hasBounced) {
+            this.resetBounce();
+          }
+        } else {
+          this.inAir = true;
+        }
+      }
+    }, 1000 / 60);
+  }
+
+
+  /**
+   * checks if a movable object above ground
+   * @returns {number}
+   */
   isAboveGround() {
-    if((this instanceof ThrowableObject)) {
-       return this.y < 350 
-    }if(this instanceof BabyChicken) {
-      return this.y < 350
+    if (this instanceof ThrowableObject) {
+      return this.y < 350;
     }
-    else {
-        return this.y < 170;
+    if (this instanceof BabyChicken) {
+      return this.y < 380;
+    } else {
+      return this.y < 185;
     }
   }
 
 
   /**
    * sets jump logic
-   * @param {number} speedY 
+   * @param {number} speedY
    */
   jump(speedY) {
-      this.inAir = true;
-      this.isSleeping = false;
-      this.speedY = speedY
-      this.currentImage = 0;
+    this.inAir = true;
+    this.isSleeping = false;
+    this.isIdle = false;
+    this.speedY = speedY;
+    this.currentImage = 0;
   }
 
 
@@ -131,7 +157,7 @@ class MovableObject extends DrawableObject{
   }
 
 
-   /**
+  /**
    * sets move left logic
    */
   moveleft() {

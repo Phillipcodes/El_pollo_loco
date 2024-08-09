@@ -1,5 +1,6 @@
 let level1;
 function initLevel() {
+    
  level1 = new Level(
     [
         new Chicken(1,0),
@@ -50,6 +51,7 @@ function initLevel() {
     [
         new Coin(1,0),
         new Coin(1,2),
+        new Coin(1,3),
         new Coin(2,3),
         new Coin(3,0),
         new Coin(3,2),

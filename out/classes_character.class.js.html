@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/character.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/character.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @class
  */
 class Character extends MovableObject {
@@ -30,30 +58,23 @@ class Character extends MovableObject {
     "./img/2_character_pepe/1_idle/long_idle/I-19.png",
     "./img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
- 
-
-  jumpStartImages = [
+  IMAGES_JUMPING = [
     "./img/2_character_pepe/3_jump/J-31.png",
     "./img/2_character_pepe/3_jump/J-32.png",
     "./img/2_character_pepe/3_jump/J-33.png",
     "./img/2_character_pepe/3_jump/J-34.png",
-     "./img/2_character_pepe/3_jump/J-34.png",
-      "./img/2_character_pepe/3_jump/J-34.png",
-       "./img/2_character_pepe/3_jump/J-34.png"
-  ];
-
-  jumpFallImages = [
+    "./img/2_character_pepe/3_jump/J-34.png",
+    "./img/2_character_pepe/3_jump/J-34.png",
+    "./img/2_character_pepe/3_jump/J-34.png",
     "./img/2_character_pepe/3_jump/J-35.png",
     "./img/2_character_pepe/3_jump/J-36.png",
     "./img/2_character_pepe/3_jump/J-36.png",
     "./img/2_character_pepe/3_jump/J-36.png",
+    "./img/2_character_pepe/3_jump/J-36.png",
     "./img/2_character_pepe/3_jump/J-37.png",
-    "./img/2_character_pepe/3_jump/J-37.png",
-    "./img/2_character_pepe/3_jump/J-38.png"
+    "./img/2_character_pepe/3_jump/J-38.png",
+    "./img/2_character_pepe/3_jump/J-39.png",
   ];
-
-
-
   IMAGES_DEAD = [
     "./img/2_character_pepe/5_dead/D-51.png",
     "./img/2_character_pepe/5_dead/D-52.png",
@@ -84,18 +105,12 @@ class Character extends MovableObject {
   bottleAmount = 0;
   bottleMax = 0;
   hasBounced = false;
-  isJumping = false; // Track if the character is jumping
-  jumpPhase = 'start'; // 'start' or 'fall'
-  jumpStartInterval;
-  jumpFallInterval;
-  jumpStartDuration = 400; // Duration for jump start phase (in ms)
-  jumpFallDuration = 970; 
-  walking_sound = SoundManager.getSound("walk", 0.3);
-  idle_sound = SoundManager.getSound("idle", 0.3);
-  jump_sound = SoundManager.getSound("jump", 0.3);
-  hurt_sound = SoundManager.getSound("hit", 0.3);
-  full_sound = SoundManager.getSound("pepeFull", 0.4);
-  collect_sound = SoundManager.getSound("collect", 0.3);
+  walking_sound = SoundManager.getSound("walk", 0.2);
+  idle_sound = SoundManager.getSound("idle", 0.2);
+  jump_sound = SoundManager.getSound("jump", 0.2);
+  hurt_sound = SoundManager.getSound("hit", 0.2);
+  full_sound = SoundManager.getSound("pepeFull", 0.2);
+  collect_sound = SoundManager.getSound("collect", 0.2);
 
 
   constructor() {
@@ -103,8 +118,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_SLEEPING);
     this.loadImages(this.IMAGES_IDLE);
-    this.loadImages(this.jumpStartImages)
-    this.loadImages(this.jumpFallImages)
+    this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.applyGravityCharacterJump();
@@ -145,8 +159,8 @@ class Character extends MovableObject {
    */
   bounce() {
     if (!this.hasBounced) {
-      this.speedY = 11; 
-      this.hasBounced = true;
+      this.speedY = 11; // Passt den Wert an, um die Intensität des Bounces zu steuern
+      this.hasBounced = true; // Setze die Flagge, um den Bounce nur einmal auszulösen
     }
   }
 
@@ -156,7 +170,6 @@ class Character extends MovableObject {
    */
   resetBounce() {
     this.hasBounced = false;
-    this.currentImage = 0
   }
 
 
@@ -169,9 +182,9 @@ class Character extends MovableObject {
     }, 135);
     setStoppableInterval(() => {
       this.handleJumpAnimation();
-    }, 130);
+    }, 205);
     setStoppableInterval(() => {
-      this.idleAnimation();
+      if (!this.isSleeping &amp;&amp; !this.isAboveGround()) this.idleAnimation();
     }, 120);
   }
 
@@ -179,70 +192,20 @@ class Character extends MovableObject {
   /**
    * handles jump animation when in air
    */
- 
   handleJumpAnimation() {
-    if (this.isJumping) {
-      if (this.jumpPhase === 'start') {
-        this.startJumpAnimation();
-      } else if (this.jumpPhase === 'fall') {
-        this.startFallAnimation();
-      }
+    if (this.inAir) {
+      this.playAnimation(this.IMAGES_JUMPING);
     }
   }
 
-  /**
-   * Start jump start animation
-   */
-  startJumpAnimation() {
-    
-    if (this.jumpStartInterval) return; 
-    this.currentImage = 0;
-    this.jumpStartInterval = setInterval(() => {
-      this.playAnimation(this.jumpStartImages);
-      if (this.speedY <= 0 ) {
-        this.jumpPhase = 'fall';
-        clearInterval(this.jumpStartInterval);
-        this.jumpStartInterval = null;
-        this.handleJumpAnimation(); 
-      }
-    }, this.jumpStartDuration / this.jumpStartImages.length);
-  }
-
-  /**
-   * Start jump falling animation
-   */
-  startFallAnimation() {
-    if (this.jumpFallInterval) return; 
-    this.currentImage = 0;
-    this.jumpFallInterval = setInterval(() => {
-      this.playAnimation(this.jumpFallImages);
-      if (!this.inAir) {
-        clearInterval(this.jumpFallInterval);
-        this.jumpFallInterval = null;
-        this.resetJump(); 
-      }
-    }, this.jumpFallDuration / this.jumpFallImages.length); 
-  }
-
-  /**
-   * Resets the jump phase and intervals
-   */
-  resetJump() {
-    // this.currentImage = 0;
-    this.isJumping = false;
-    this.jumpPhase = 'start'; 
-    this.speedY = 0; 
-    this.playAnimation(this.IMAGES_IDLE);
-
-  }
 
   /**
    * sets the idle Animation
    */
   idleAnimation() {
-    if (this.isSleeping && !this.isAboveGround()) {
+    if (this.isSleeping &amp;&amp; !this.isAboveGround()) {
       this.playAnimation(this.IMAGES_SLEEPING);
-    } else if (this.isIdle && !this.isAboveGround()) {
+    } else if (this.isIdle &amp;&amp; !this.isAboveGround()) {
       this.playAnimation(this.IMAGES_IDLE);
     }
   }
@@ -261,19 +224,13 @@ class Character extends MovableObject {
     } else if (this.isHurt()) {
       this.playAnimation(this.IMAGES_HURT);
       this.hurt_sound.play();
+      // } else if (this.isAboveGround()) {
+      //  this.playAnimation(this.IMAGES_JUMPING)
     } else {
-      if (this.playWalkAnimationWhenNotinAir()) this.playAnimation(this.IMAGES_WALKING);
-      
+      if (this.world.keyboard.RIGHT || (this.world.keyboard.LEFT &amp;&amp; !this.isAboveGround())) {
+        this.playAnimation(this.IMAGES_WALKING);
+      }
     }
-  }
-
-
-  /**
-   * checks if movement animation is valid  to play
-   * @returns {boolean}
-   */
-  playWalkAnimationWhenNotinAir() {
-  return this.world.keyboard.RIGHT  && !this.isAboveGround() || this.world.keyboard.LEFT && !this.isAboveGround()
   }
 
 
@@ -291,9 +248,9 @@ class Character extends MovableObject {
    * handle movement based on input
    */
   handleMovement() {
-    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) this.characterMovementRight();
-    if (this.world.keyboard.LEFT && this.x > 0) this.characterMovementLeft();
-    if (this.world.keyboard.UP && !this.isAboveGround()) this.characterMovementJump();
+    if (this.world.keyboard.RIGHT &amp;&amp; this.x &lt; this.world.level.level_end_x) this.characterMovementRight();
+    if (this.world.keyboard.LEFT &amp;&amp; this.x > 0) this.characterMovementLeft();
+    if (this.world.keyboard.UP &amp;&amp; !this.isAboveGround()) this.characterMovementJump();
     if (this.world.keyboard.LEFT || this.world.keyboard.RIGHT) {
       if (this.walking_sound.paused) {
         this.walking_sound.currentTime = 0;
@@ -329,12 +286,9 @@ class Character extends MovableObject {
    * sets behaviour for movment for the Jump
    */
   characterMovementJump() {
-    this.isJumping = true;
-    this.jumpPhase = 'start'
     this.jump((this.speedY = 11));
     this.jump_sound.play();
     this.detectMovement();
-    
   }
 
 
@@ -366,7 +320,7 @@ class Character extends MovableObject {
       }
     }, this.sleepDuration);
     this.idleTimeout = setTimeout(() => {
-      if (!this.isSleeping && !this.isDead()) {
+      if (!this.isSleeping &amp;&amp; !this.isDead()) {
         this.isIdle = true;
         this.playAnimation(this.IMAGES_IDLE);
       }
@@ -382,3 +336,26 @@ class Character extends MovableObject {
     this.resetMovementTimeout();
   }
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Character.html">Character</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossBar.html">EndbossBar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backToStartscreen">backToStartscreen</a></li><li><a href="global.html#checkScreenSize">checkScreenSize</a></li><li><a href="global.html#clearCanvas">clearCanvas</a></li><li><a href="global.html#closeFullscreen">closeFullscreen</a></li><li><a href="global.html#destroyWorld">destroyWorld</a></li><li><a href="global.html#endBossDead">endBossDead</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hoverSound">hoverSound</a></li><li><a href="global.html#openFullscreen">openFullscreen</a></li><li><a href="global.html#openWindow">openWindow</a></li><li><a href="global.html#pepeDead">pepeDead</a></li><li><a href="global.html#removeKeyListeners">removeKeyListeners</a></li><li><a href="global.html#resetKeyboardState">resetKeyboardState</a></li><li><a href="global.html#setGameOverStart">setGameOverStart</a></li><li><a href="global.html#setMuteSounds">setMuteSounds</a></li><li><a href="global.html#setOnclickEvents">setOnclickEvents</a></li><li><a href="global.html#setRestartAfterWin">setRestartAfterWin</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setWorldStart">setWorldStart</a></li><li><a href="global.html#showCapsLockWarning">showCapsLockWarning</a></li><li><a href="global.html#stopGame">stopGame</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Aug 08 2024 21:57:09 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -6,17 +6,17 @@ class Coin extends DrawableObject {
     width = 130;
     offset = {
         top: 50, //offset x iist links y top  width is right height is bottom
-        bottom: 50,
+        bottom: 60,
         left: 37,
         right: 37,
       };
 
 
-    constructor(group,index) { 
+    constructor(group,index,y) { 
         super().loadImage('./img/8_coin/coin_1.png');
         this.loadImages(this.IMAGES_COIN)
         this.x = this.setCollectablesPoint(group,index)
-        this.y = 50 * Math.random()  +30
+        this.y =  120 * Math.random()  +20
         this.animate() 
         
      }

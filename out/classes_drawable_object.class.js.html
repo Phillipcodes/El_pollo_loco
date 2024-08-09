@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classes/drawable_object.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classes/drawable_object.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @class
  */
 class DrawableObject {
@@ -53,10 +81,10 @@ class DrawableObject {
    */
   isColliding(mo) {
     return (
-      this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-      this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-      this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-      this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+      this.x + this.width - this.offset.right > mo.x + mo.offset.left &amp;&amp;
+      this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &amp;&amp;
+      this.x + this.offset.left &lt; mo.x + mo.width - mo.offset.right &amp;&amp;
+      this.y + this.offset.top &lt; mo.y + mo.height - mo.offset.bottom
     );
   }
 
@@ -73,16 +101,16 @@ class DrawableObject {
     const moTop = mo.y + mo.offset.top;
     const verticalDistance = charBottom - moTop;
     const collisionBuffer = 25;
-    const isAbove = verticalDistance <= collisionBuffer && verticalDistance >= -collisionBuffer;
-    const isHorizontallyOverlapping = this.x + this.width - this.offset.right > mo.x + mo.offset.left && this.x + this.offset.left < mo.x + mo.width - mo.offset.right;
+    const isAbove = verticalDistance &lt;= collisionBuffer &amp;&amp; verticalDistance >= -collisionBuffer;
+    const isHorizontallyOverlapping = this.x + this.width - this.offset.right > mo.x + mo.offset.left &amp;&amp; this.x + this.offset.left &lt; mo.x + mo.width - mo.offset.right;
 
-    return isAbove && isHorizontallyOverlapping;
+    return isAbove &amp;&amp; isHorizontallyOverlapping;
   }
   
 
   isFalling() {
     
-    return this.speedY < 0;
+    return this.speedY &lt; 0;
   }
 
   
@@ -112,7 +140,7 @@ class DrawableObject {
   /**
    * collects item when colliding
    * @param {object} item
-   * @param {Array<Object>} array
+   * @param {Array&lt;Object>} array
    */
   collectItem(item, array) {
     if (this.isColliding(item)) {
@@ -137,7 +165,7 @@ class DrawableObject {
     let path = images[i];
     this.img = this.imageCache[path];
     this.currentImage++;
-    if (i === images.length - 1 && this.isDeadFlag) {
+    if (i === images.length - 1 &amp;&amp; this.isDeadFlag) {
       this.currentImage = i; // Setze das Bild auf das letzte Bild
     }
   }
@@ -172,3 +200,26 @@ class DrawableObject {
     return baseX + offset;
   }
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Character.html">Character</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossBar.html">EndbossBar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backToStartscreen">backToStartscreen</a></li><li><a href="global.html#checkScreenSize">checkScreenSize</a></li><li><a href="global.html#clearCanvas">clearCanvas</a></li><li><a href="global.html#closeFullscreen">closeFullscreen</a></li><li><a href="global.html#destroyWorld">destroyWorld</a></li><li><a href="global.html#endBossDead">endBossDead</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hoverSound">hoverSound</a></li><li><a href="global.html#openFullscreen">openFullscreen</a></li><li><a href="global.html#openWindow">openWindow</a></li><li><a href="global.html#pepeDead">pepeDead</a></li><li><a href="global.html#removeKeyListeners">removeKeyListeners</a></li><li><a href="global.html#resetKeyboardState">resetKeyboardState</a></li><li><a href="global.html#setGameOverStart">setGameOverStart</a></li><li><a href="global.html#setMuteSounds">setMuteSounds</a></li><li><a href="global.html#setOnclickEvents">setOnclickEvents</a></li><li><a href="global.html#setRestartAfterWin">setRestartAfterWin</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setWorldStart">setWorldStart</a></li><li><a href="global.html#showCapsLockWarning">showCapsLockWarning</a></li><li><a href="global.html#stopGame">stopGame</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Aug 08 2024 21:57:09 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

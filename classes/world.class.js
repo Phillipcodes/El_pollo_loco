@@ -1,3 +1,6 @@
+/**
+ * @class
+ */
 class World {
   character = new Character();
   level = level1;
@@ -66,10 +69,12 @@ class World {
       this.updateThrow();
       this.checkEndbossActivation();
       
-    }, 100);
+    }, 10);
   }
   
- 
+ /**
+  * checks every 100ms if boss is in reach of the chracter when yes he starts moving
+  */
   checkEndbossActivation() {
     setInterval(() => {
       this.level.enemies.forEach(enemy => {
@@ -85,12 +90,14 @@ class World {
    * activate endboss movement
    */
   activateEndboss(endboss) {
-    if (Math.abs(this.character.x - endboss.x) < 450) { 
+    if (Math.abs(this.character.x - endboss.x) < 350) { 
       endboss.startMoving(); 
     }
   }
 
-
+/**
+ * checks if throw on cooldown when not it creates a new one and starts throwing it
+ */
   checkThrowObject() {
     if (this.isThrowAllowed()) {
         this.lastThrowTime = Date.now();
@@ -111,7 +118,7 @@ isThrowAllowed() {
     const currentTime = Date.now();
     if (this.keyboard.SPACE && this.character.bottleAmount > 0) {
         if (currentTime - this.lastThrowTime < this.throwCooldown) {
-            console.log('Cooldown noch nicht abgelaufen.');
+            // console.log('Cooldown noch nicht abgelaufen.');
             return false; 
         }
         return true; 
@@ -155,32 +162,30 @@ updateBottleAmount() {
     this.bottlebar.setPercentage(setBottlePercentage);
 }
 
-
+/**
+ * checks if the character hits an enemy
+ */
   checkEnemyCollision() {
     this.level.enemies.forEach(enemy => {
-
       if (enemy.isDead) {
-        // Skips dead enemies
         return;
       }
-
       if (this.character.isColliding(enemy)) {
-        if (!this.character.isCollidingAbove(enemy)) {
-       
-          console.log('Collision detected', enemy);
+        if (!this.character.isCollidingAbove(enemy) && !this.character.isFalling()) {
           this.character.hit(enemy.DMG);
           this.statusbar.setPercentage(this.character.health);
         }
-
       }
     });
   }
 
-  
+  /**
+   * checks is the character hits a bottle
+   */
   checkBottleCollision() {
     this.level.bottles.forEach(bottle => {
       if(this.character.isColliding(bottle)) {
-        console.log('collison detected', bottle);
+        // console.log('collison detected', bottle);
         this.character.collectItem(bottle,this.level.bottles);
         this.character.updateCollectables()
         let setBottlePercentage = this.character.bottleAmount * 100 / this.character.bottleMax 
@@ -189,27 +194,20 @@ updateBottleAmount() {
     });    
   }
 
-
+/**
+ * checks if the chracter is in air falling and hitting an enemy form above
+ */
   checkCollisionAbove() {
     this.level.enemies.forEach(enemy => {
-
       if (enemy.isDead) {
-      
         return;
       }
-      
-
-        if (this.character.isCollidingAbove(enemy)) {
-            console.log('Collision detected above', enemy);
-            
-         
+        if (this.character.isCollidingAbove(enemy) && this.character.isAboveGround() && this.character.isFalling()) {
+            // console.log('Collision detected above', enemy);
             this.character.bounce(); 
-            
             enemy.die();
-           
             this.level.removeEnemy(enemy);
         }
-    
     });
 }
 
@@ -217,15 +215,13 @@ updateBottleAmount() {
   checkCoinCollision() {
     this.level.coins.forEach(coin => {
       if(this.character.isColliding(coin)) {
-        console.log('collison detected', coin);
+        // console.log('collison detected', coin);
         this.character.collectItem(coin,this.level.coins)
         this.character.updateCollectables('coinAmount')
         let setCoinPercentage = this.character.coinAmount * 100 / this.character.coinMax 
         this.coinbar.setPercentage(setCoinPercentage)
       }
-      
     });
-    
   }
 
 
@@ -239,21 +235,13 @@ updateBottleAmount() {
               thr.hasHit = true; 
               thr.bottleHit = true
               this.updateEndbossStatusBar(thr.DMG);
-              
             }
             hit = true;
           }
         });
+      }});}
+    
   
-        if (hit) {
-       
-          
-        }
-      }
-    });
-  }
-
-
   /**
    * Updates Boss status bar based on his health
    * @param {number} thr 
@@ -271,7 +259,6 @@ updateBottleAmount() {
   }
 
   
-  
   /**
    *  draws the canvan elements
    */
@@ -280,9 +267,9 @@ updateBottleAmount() {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.BackgroundObjects);
     this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.coins);
     this.drawStatusBars();
     this.addToMap(this.character);
-    this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.bottles); // maybe rewirte the draw function for none moveable objects jsut to make it clearer what in which class it contains 
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects)
@@ -367,14 +354,13 @@ updateBottleAmount() {
    */
   initializeSoundButton() {
     const soundButton = document.getElementById('sound-button');
-   
       if (playSound) {
-        SoundManager.muteAll();;
-        soundButton.src = './img/10_overlay_icons/volume.png'; 
+        SoundManager.muteAll();
+        soundButton.src = './img/10_overlay_icons/no_sound.png'; 
         playSound = false;
       } else {
         SoundManager.unmuteAll();
-        soundButton.src = './img/10_overlay_icons/no_sound.png'; 
+        soundButton.src = './img/10_overlay_icons/volume.png'; 
         playSound = true;
       }
     };

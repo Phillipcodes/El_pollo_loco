@@ -26,7 +26,10 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>class SoundManager {
+            <pre class="prettyprint source linenums"><code>/**
+ * @class
+ */
+class SoundManager {
   static sounds = {
     throw: new Audio("./audio/throw_sound.mp3"),
     walk: new Audio("./audio/pepe_walk_sound.mp3"),
@@ -40,6 +43,8 @@
     backgroundMusic: new Audio("./audio/background_music.mp3"),
     winSound: new Audio("./audio/win.mp3"),
     gameOverSound: new Audio("./audio/game_over.mp3"),
+    hoverSound: new Audio("./audio/hover_sound.mp3")
+    
   };
 
 
@@ -69,6 +74,7 @@
       sound.muted = true;
     });
     localStorage.setItem('soundsMuted', 'true');
+    
   }
 
 
@@ -82,6 +88,13 @@
     }
   }
 
+  static muteWinSound() {
+    const winSound = this.sounds["winSound"];
+    if (winSound) {
+      winSound.muted = true;
+    }
+  }
+
 
   /**
    * unmutes all sounds
@@ -90,23 +103,8 @@
     Object.values(this.sounds).forEach((sound) => {
       sound.muted = false;
     });
-    localStorage.setItem('soundsMuted', 'false');
+    
   }
-
-/**
- * checks the localstorage if sound was muted before
- */
-  static applyMuteState() {
-    // Retrieve mute state from local storage
-    const muteState = localStorage.getItem('soundsMuted');
-
-    // Apply the mute state to all sounds
-    if (muteState === 'true') {
-        this.muteAll();
-    } else {
-        this.unmuteAll();
-    }
-}
 
 }
 </code></pre>
@@ -119,13 +117,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#backToStartscreen">backToStartscreen</a></li><li><a href="global.html#checkScreenSize">checkScreenSize</a></li><li><a href="global.html#clearCanvas">clearCanvas</a></li><li><a href="global.html#closeFullscreen">closeFullscreen</a></li><li><a href="global.html#destroyWorld">destroyWorld</a></li><li><a href="global.html#endBossDead">endBossDead</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hoverSound">hoverSound</a></li><li><a href="global.html#hoverSoundStop">hoverSoundStop</a></li><li><a href="global.html#openFullscreen">openFullscreen</a></li><li><a href="global.html#openWindow">openWindow</a></li><li><a href="global.html#pepeDead">pepeDead</a></li><li><a href="global.html#removeKeyListeners">removeKeyListeners</a></li><li><a href="global.html#resetKeyboardState">resetKeyboardState</a></li><li><a href="global.html#setGameOverStart">setGameOverStart</a></li><li><a href="global.html#setMuteSounds">setMuteSounds</a></li><li><a href="global.html#setOnclickEvents">setOnclickEvents</a></li><li><a href="global.html#setRestartAfterWin">setRestartAfterWin</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setWorldStart">setWorldStart</a></li><li><a href="global.html#showCapsLockWarning">showCapsLockWarning</a></li><li><a href="global.html#stopGame">stopGame</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Character.html">Character</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossBar.html">EndbossBar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="SoundManager.html">SoundManager</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backToStartscreen">backToStartscreen</a></li><li><a href="global.html#checkScreenSize">checkScreenSize</a></li><li><a href="global.html#clearCanvas">clearCanvas</a></li><li><a href="global.html#closeFullscreen">closeFullscreen</a></li><li><a href="global.html#destroyWorld">destroyWorld</a></li><li><a href="global.html#endBossDead">endBossDead</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hoverSound">hoverSound</a></li><li><a href="global.html#openFullscreen">openFullscreen</a></li><li><a href="global.html#openWindow">openWindow</a></li><li><a href="global.html#pepeDead">pepeDead</a></li><li><a href="global.html#removeKeyListeners">removeKeyListeners</a></li><li><a href="global.html#resetKeyboardState">resetKeyboardState</a></li><li><a href="global.html#setGameOverStart">setGameOverStart</a></li><li><a href="global.html#setMuteSounds">setMuteSounds</a></li><li><a href="global.html#setOnclickEvents">setOnclickEvents</a></li><li><a href="global.html#setRestartAfterWin">setRestartAfterWin</a></li><li><a href="global.html#setStoppableInterval">setStoppableInterval</a></li><li><a href="global.html#setWorldStart">setWorldStart</a></li><li><a href="global.html#showCapsLockWarning">showCapsLockWarning</a></li><li><a href="global.html#stopGame">stopGame</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Aug 07 2024 20:21:01 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Aug 08 2024 21:57:09 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>
