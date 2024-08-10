@@ -232,7 +232,6 @@ function endBossDead() {
   clearCanvas();
   destroyWorld();
   openWindow('win-screen');
-  SoundManager.checkAndToggleSound()
   win_sound.play();
 }
 

@@ -85,29 +85,6 @@ class DrawableObject {
     return this.speedY < 0;
   }
 
-  
-  // drawFrame(ctx) {
-  //   if (this.setDrawFrameInstance()) {
-  //     ctx.beginPath();
-  //     ctx.lineWidth = "5";
-  //     ctx.strokeStyle = "blue";
-  //     ctx.rect(this.x, this.y, this.width, this.height);
-  //     ctx.stroke();
-  //   }
-  //   if (this.setDrawFrameInstance()) {
-  //     ctx.beginPath();
-  //     ctx.lineWidth = "5";
-  //     ctx.strokeStyle = "red";
-  //     ctx.rect(this.x + this.offset.left, this.y + this.offset.top, this.x + this.width - this.offset.right - (this.x + this.offset.left), this.y + this.height - this.offset.bottom - (this.y + this.offset.top));
-  //     ctx.stroke();
-  //   }
-  // }
-
-
-  // setDrawFrameInstance() {
-  //   return this instanceof Character || this instanceof Chicken || this instanceof BabyChicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle;
-  // }
-
 
   /**
    * collects item when colliding
