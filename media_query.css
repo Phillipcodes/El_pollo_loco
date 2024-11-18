@@ -42,7 +42,7 @@
     canvas {
       height: 100vh;
       border: none;
-      padding-top: env(safe-area-inset-top); /* Um die obere Leiste auf Geräten wie dem iPhone X zu berücksichtigen */
+      padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
     }
     #mobile-warning {
