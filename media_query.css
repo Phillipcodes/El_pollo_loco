@@ -39,11 +39,14 @@
   }
   
   @media only screen and (height <= 480px) {
+
+    body {
+      height: 100dvh;
+    }
+
     canvas {
       height: 100vh;
       border: none;
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
     }
     #mobile-warning {
       display: block;
